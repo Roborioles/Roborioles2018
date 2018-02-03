@@ -67,3 +67,16 @@ double DriveBase::SensorReading() {
 	double a2 = (ceil(a1*100))/100;
 	return a2;
 }
+
+void DriveBase::AutoShift(){
+	double motorVelocity = rightMotor2->GetSensorCollection().GetQuadratureVelocity();
+		bool isHigh = shiftSolenoid->Get();
+		int rpm = ((motorVelocity*10)/4096)*60;
+		if(isHigh == false && rpm > 1000){
+			shiftSolenoid->Set(true);
+		}
+
+		if(isHigh == true && rpm < 750){
+			shiftSolenoid->Set(false);
+		}
+}

@@ -29,6 +29,7 @@ void Drive::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void Drive::Execute() {
 	Robot::driveBase->DriveWithJoysticks();
+	Robot::driveBase->AutoShift();
 	SmartDashboard::PutNumber("Pressure: ", Robot::driveBase->SensorReading());
 }
 
