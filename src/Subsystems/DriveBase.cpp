@@ -68,17 +68,23 @@ double DriveBase::SensorReading() {
 	return a2;
 }
 
-void DriveBase::AutoShift(){
+void DriveBase::AutoShift(double upshift, double downshift){
 	double motorVelocity = leftMotor1->GetSensorCollection().GetQuadratureVelocity();
 		bool isHigh = shiftSolenoid->Get();
 		int rpm = ((motorVelocity*10)/4096)*60;
 		rpm = abs(rpm);
 		SmartDashboard::PutNumber("RPM: ", rpm);
-		if(isHigh == false && rpm > 1000){
+
+		if(isHigh == false && rpm > upshift){
 			shiftSolenoid->Set(true);
 		}
 
-		if(isHigh == true && rpm < 750){
+		if(isHigh == true && rpm < downshift){
 			shiftSolenoid->Set(false);
 		}
+}
+
+void DriveBase::ShiftingInfo(){
+	SmartDashboard::PutNumber("Upshift", 1000);
+	SmartDashboard::PutNumber("Downshift", 750);
 }
