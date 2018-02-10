@@ -29,7 +29,7 @@ void ElevatorTarget::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void ElevatorTarget::Execute() {
-	frc::SmartDashboard::PutString("DB/String 1",std::to_string(Robot::oi->getGamePad()->GetPOV(0)));
+	Robot::elevator->ElevatorExecute();
 }
 
 // Make this return true when this Command no longer needs to run execute()

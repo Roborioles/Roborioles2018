@@ -64,7 +64,7 @@ void RobotMap::init() {
     elevatorElevatorMotor.reset(new WPI_TalonSRX(5));
     
     
-    elevatorElevatorBrake.reset(new frc::Solenoid(19, 7));
+    elevatorElevatorBrake.reset(new frc::Solenoid(0, 2));
     lw->AddActuator("Elevator", "ElevatorBrake", elevatorElevatorBrake);
     
 

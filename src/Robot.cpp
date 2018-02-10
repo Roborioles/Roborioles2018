@@ -76,7 +76,7 @@ void Robot::TeleopInit() {
 		autonomousCommand->Cancel();
 	cmd.reset(new Drive());
 	cmd->Start();
-
+	Robot::elevator->Init(true);
 }
 
 void Robot::TeleopPeriodic() {
