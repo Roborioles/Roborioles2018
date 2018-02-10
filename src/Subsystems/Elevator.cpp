@@ -107,7 +107,10 @@ void Elevator::ElevatorExecute(){
 	}
 
 	//process move
-	double posThreshold = 1.0;
+	double goThreshold = 1.5;
+	double stopThreshold = 0.5;
+	double posThreshold = isMoving ? stopThreshold : goThreshold;
+	int maxStopCount = 8;
 	//double maxSpeed = .5;
 	//double minSpeed = .1;
 	double elevatorSpeed = .1;
@@ -116,11 +119,11 @@ void Elevator::ElevatorExecute(){
 	frc::SmartDashboard::PutString("DB/String 0",std::to_string(encoderValue));
 	double difference = targetPos - encoderValue;
 	frc::SmartDashboard::PutString("DB/String 2",std::to_string(difference));
+
 	if(difference > posThreshold){
 		//keep moving toward targetPos -> move up
-
-		//open brake
-		elevatorBrake->Set(false);
+		isMoving = true;
+		motorStopCount = -1;
 		if (isPID) {
 			//set target sensor
 			elevatorMotor->Set(ControlMode::Position,targetPos*4096.0);
@@ -130,11 +133,15 @@ void Elevator::ElevatorExecute(){
 			elevatorMotor->Set(ControlMode::PercentOutput,elevatorSpeed);
 			frc::SmartDashboard::PutString("DB/String 3",("called"));
 		}
+		//open brake
+		elevatorBrake->Set(false);
+
+
 	}
 	else if(difference < -posThreshold){
 		//move down
-		//open brake
-		elevatorBrake->Set(false);
+		isMoving = true;
+		motorStopCount = -1;
 		if (isPID) {
 			//set target sensor
 			elevatorMotor->Set(ControlMode::Position,targetPos*4096.0);
@@ -142,13 +149,29 @@ void Elevator::ElevatorExecute(){
 			//start motor
 			elevatorMotor->Set(ControlMode::PercentOutput,-elevatorSpeed);
 		}
+		//open brake
+		elevatorBrake->Set(false);
 	}
 	else{
+		isMoving = false;
+		if(motorStopCount == -1){
+			motorStopCount = 0;
+		}
 		//stop motor
-		elevatorMotor->Set(ControlMode::PercentOutput,0);
+		//elevatorMotor->Set(ControlMode::PercentOutput,0);
 		//close brake
 		elevatorBrake->Set(true);
 	}
+	// * * stop delay is 20ms*(maxStopCount-1)
+	if(motorStopCount >= maxStopCount){
+		//stop motor
+		elevatorMotor->Set(ControlMode::PercentOutput,0);
+		motorStopCount = 0;
+	}
+	else if(motorStopCount >= 0){
+		motorStopCount += 1;
+	}
+
 }
 
 void Elevator::ElevatorMoveUp(){

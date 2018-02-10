@@ -31,6 +31,8 @@ private:
 	double targetPos;
 	bool isPID;
 	bool manualMove = false;
+	bool isMoving = false;
+	int motorStopCount = -1;
 
 public:
 	Elevator();
