@@ -79,14 +79,15 @@ void Elevator::Init(bool pid){
 	if(pid){
 		/* set closed loop gains in slot0 */
 		elevatorMotor->Config_kF(kPIDLoopIdx, 0, kTimeoutMs);
-		elevatorMotor->Config_kP(kPIDLoopIdx, 0.1, kTimeoutMs);
-		elevatorMotor->Config_kI(kPIDLoopIdx, 0.001, kTimeoutMs);
+		elevatorMotor->Config_kP(kPIDLoopIdx, 0.07, kTimeoutMs);
+		elevatorMotor->Config_kI(kPIDLoopIdx, 0, kTimeoutMs);
 		elevatorMotor->Config_kD(kPIDLoopIdx, 0, kTimeoutMs);
 	}
 }
 
 void Elevator::ElevatorGoToRevolutions(double newTargetPos){
 	targetPos = newTargetPos;
+	frc::SmartDashboard::PutString("DB/String 1",std::to_string(targetPos));
 }
 
 void Elevator::ElevatorExecute(){
@@ -108,12 +109,16 @@ void Elevator::ElevatorExecute(){
 
 	//process move
 	double goThreshold = 1.5;
-	double stopThreshold = 0.5;
+	double stopThreshold = 0.25;
 	double posThreshold = isMoving ? stopThreshold : goThreshold;
 	int maxStopCount = 8;
 	//double maxSpeed = .5;
-	//double minSpeed = .1;
-	double elevatorSpeed = .1;
+	double minSpeed = .3;
+	double taperStart = 6.0;
+	double taperEnd = 3.0;
+	//double elevatorSpeed = .1;
+	double upElevatorSpeed = 0.8;
+	double downElevatorSpeed = 0.3;
 
 	double encoderValue = elevatorMotor->GetSelectedSensorPosition(0)/4096.0;
 	frc::SmartDashboard::PutString("DB/String 0",std::to_string(encoderValue));
@@ -128,10 +133,20 @@ void Elevator::ElevatorExecute(){
 			//set target sensor
 			elevatorMotor->Set(ControlMode::Position,targetPos*4096.0);
 		} else {
+			double actualSpeed = upElevatorSpeed;
+			if (difference < taperStart) {
+				if (difference < taperEnd) {
+					actualSpeed = minSpeed;
+				}
+				else {
+					actualSpeed = minSpeed + ((upElevatorSpeed - minSpeed) * (difference - taperEnd))/(taperStart - taperEnd);
+				}
+			}
+
 			//start motor
 
-			elevatorMotor->Set(ControlMode::PercentOutput,elevatorSpeed);
-			frc::SmartDashboard::PutString("DB/String 3",("called"));
+			elevatorMotor->Set(ControlMode::PercentOutput,actualSpeed);
+			frc::SmartDashboard::PutString("DB/String 3",std::to_string(actualSpeed));
 		}
 		//open brake
 		elevatorBrake->Set(false);
@@ -147,7 +162,16 @@ void Elevator::ElevatorExecute(){
 			elevatorMotor->Set(ControlMode::Position,targetPos*4096.0);
 		} else {
 			//start motor
-			elevatorMotor->Set(ControlMode::PercentOutput,-elevatorSpeed);
+			double actualSpeed = downElevatorSpeed;
+			if (difference < taperStart) {
+				if (difference < taperEnd) {
+					actualSpeed = minSpeed;
+				}
+				else {
+					actualSpeed = minSpeed + ((downElevatorSpeed - minSpeed) * (difference - taperEnd))/(taperStart - taperEnd);
+				}
+			}
+			elevatorMotor->Set(ControlMode::PercentOutput,-actualSpeed);
 		}
 		//open brake
 		elevatorBrake->Set(false);
@@ -185,8 +209,8 @@ void Elevator::ElevatorMoveDown(){
 }
 
 void Elevator::SetPIDs(){
-	std::string pstring = frc::SmartDashboard::GetString("DB/String 5", "0.1");
-	double pdouble = 0.1;
+	std::string pstring = frc::SmartDashboard::GetString("DB/String 5", "0.07");
+	double pdouble = 0.07;
 	//1-30-18: 0.3
 	/*When the p-value is too large it moves very jumpy. A larger p-value increases the strength of the motor.
 	 *When it is too low it won't even reach the target location.
@@ -194,8 +218,8 @@ void Elevator::SetPIDs(){
 	if (pstring.length() > 0) {
 		pdouble = std::stod(pstring);
 	}
-	std::string istring = frc::SmartDashboard::GetString("DB/String 6", "0.001");
-	double idouble = 0.001;
+	std::string istring = frc::SmartDashboard::GetString("DB/String 6", "0");
+	double idouble = 0;
 	//1-30-18: 0.003
 	/*The i-value must be pretty small. A large i-value causes the i-value to oscillate greatly.
 	 * If the i-value is too small it takes a very long time to reach the target location.
@@ -219,3 +243,23 @@ void Elevator::SetPIDs(){
 }
 
 //Move to setpoints
+void Elevator::ElevatorGoToInches(double inches){
+	ElevatorGoToRevolutions(inches*2.73258);
+}
+void Elevator::ElevatorGoToFloor(){
+	ElevatorGoToInches(0);
+}
+void Elevator::ElevatorGoToExchange(){
+	ElevatorGoToInches(4);
+	//should be 2
+}
+void Elevator::ElevatorGoToSwitch(){
+	ElevatorGoToInches(30);
+	//should be 21
+}
+void Elevator::ElevatorGoToScale(){
+	ElevatorGoToInches(62);
+}
+void Elevator::ElevatorGoToHighScale(){
+	ElevatorGoToInches(74);
+}
