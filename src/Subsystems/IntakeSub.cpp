@@ -51,7 +51,7 @@ void IntakeSub::openIntake(bool onOff){
 
 
 void IntakeSub::gamepadControl(double left, double right){
-	intakeMotor1->Set(left);
+	intakeMotor1->Set(-1.0*left);
 	intakeMotor2->Set(right);
 }
 // Put methods for controlling this subsystem
