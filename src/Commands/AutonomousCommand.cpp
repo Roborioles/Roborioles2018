@@ -23,7 +23,8 @@ AutonomousCommand::AutonomousCommand(): frc::Command() {
 
 // Called just before this Command runs the first time
 void AutonomousCommand::Initialize() {
-
+	Robot::driveBase->EncoderReset();
+	Robot::driveBase->AutoDrive();
 }
 
 // Called repeatedly when this Command is scheduled to run

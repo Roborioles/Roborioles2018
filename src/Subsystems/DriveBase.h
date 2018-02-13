@@ -46,6 +46,8 @@ public:
 	void ShiftingInfo();
 	void ArcadeDrive(float moveValue, float rotateValue);
 	float Limit(float num);
+	void EncoderReset();
+	void AutoDrive();
 private:
 
 };
