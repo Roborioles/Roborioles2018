@@ -60,6 +60,7 @@ public:
 	void ElevatorExecuteTarget();
 	void ElevatorMoveUp();
 	void ElevatorMoveDown();
+	void PartyLight(bool isMoving, double encoderValue);
 };
 
 #endif

@@ -139,6 +139,7 @@ void Elevator::ElevatorExecute(){
 	else if(motorStopCount >= 0){
 		motorStopCount += 1;
 	}
+	PartyLight(isManualMoving || isTargetMoving, encoderValue);
 }
 
 void Elevator::ElevatorExecuteTarget(){
@@ -262,3 +263,55 @@ void Elevator::ElevatorGoToScale(){
 void Elevator::ElevatorGoToHighScale(){
 	ElevatorGoToInches(74);
 }
+
+void Elevator::PartyLight(bool isMoving,double encoderValue){
+	double switchSpot=66;
+	double lowScaleSpot=137.5;
+	double midScaleSpot=170.5;
+	double highScaleSpot=203.5;
+
+
+	if(encoderValue < switchSpot){
+		if(isMoving){
+			elevatorLEDs->Set(-.06);
+		}
+		else{
+			elevatorLEDs->Set(.67);
+		}
+
+
+	} else if(encoderValue < lowScaleSpot){
+		if(isMoving){
+			elevatorLEDs->Set(-.06);
+		}
+		else{
+			elevatorLEDs->Set(.61);
+		}
+
+
+	} else if(encoderValue < midScaleSpot){
+		if(isMoving){
+			elevatorLEDs->Set(-.06);
+		}
+		else{
+			elevatorLEDs->Set(-.09);
+		}
+	} else if(encoderValue < highScaleSpot){
+		if(isMoving){
+			elevatorLEDs->Set(-.06);
+		}
+		else{
+			elevatorLEDs->Set(.71);
+		}
+	} else {
+		if(isMoving){
+			elevatorLEDs->Set(-.06);
+		}
+		else{
+			elevatorLEDs->Set(.71);
+
+		}
+	}
+}
+
+
