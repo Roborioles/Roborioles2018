@@ -48,6 +48,8 @@ public:
 	float Limit(float num);
 	void EncoderReset();
 	void AutoDrive();
+	void PrintValues();
+	void DisablePID();
 private:
 
 };

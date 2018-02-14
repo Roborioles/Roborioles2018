@@ -53,6 +53,7 @@ void Robot::RobotInit() {
  * You can use it to reset subsystems before shutting down.
  */
 void Robot::DisabledInit(){
+	Robot::driveBase->EncoderReset();
 
 }
 
@@ -62,6 +63,8 @@ void Robot::DisabledPeriodic() {
 
 void Robot::AutonomousInit() {
 	Robot::intakeSub->openIntake(false);
+	Robot::driveBase->EncoderReset();
+
 	autonomousCommand = chooser.GetSelected();
 	if (autonomousCommand != nullptr)
 		autonomousCommand->Start();
@@ -81,6 +84,7 @@ void Robot::TeleopInit() {
 	cmd.reset(new Drive());
 	cmd->Start();
 	Robot::elevator->Init(true);
+	Robot::driveBase->DisablePID();
 }
 
 void Robot::TeleopPeriodic() {

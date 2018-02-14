@@ -46,19 +46,11 @@ DriveBase::DriveBase() : frc::Subsystem("DriveBase") {
     rightMotor1->SetInverted(true);
     rightMotor2->SetInverted(true);
 
-	std::string _sb;
-	std::string _Rsb;
-	//int _loops = 0;
-	//bool _lastButton1 = false;
-	/** save the target position to servo to */
-	//double targetPositionRotations;
-
-
 	/* choose the sensor and sensor direction */
 			leftMotor1->ConfigSelectedFeedbackSensor(
 					FeedbackDevice::CTRE_MagEncoder_Relative, kPIDLoopIdx,
 					kTimeoutMs);
-			leftMotor1->SetSensorPhase(false);
+			leftMotor1->SetSensorPhase(true);
 
 			/* choose the sensor and sensor direction */
 			rightMotor1->ConfigSelectedFeedbackSensor(
@@ -207,7 +199,7 @@ void DriveBase::EncoderReset(){
 }
 
 void DriveBase::AutoDrive(){
-		double targetPositionRotations = 1* 10.0 * 4096; /* 50 Rotations in either direction */
+		double targetPositionRotations = 1.25 * 10.0 * 4096; /* 50 Rotations in either direction */
 		leftMotor1->Set(ControlMode::Position, targetPositionRotations); /* 50 rotations in either direction */
 		rightMotor1->Set(ControlMode::Position, targetPositionRotations); /* 50 rotations in either direction */
 		//leftMotor1->Set(ControlMode::PercentOutput, .5);
@@ -240,4 +232,22 @@ void DriveBase::AutoDrive(){
 
 
 }
+void DriveBase::PrintValues(){
+	printf("LeftPosition %i(%i)\n,RightPosition%i(%i)\n",
+			leftMotor1->GetSelectedSensorPosition(kPIDLoopIdx),
+			leftMotor1->GetClosedLoopError(kPIDLoopIdx),
+			rightMotor1->GetSelectedSensorPosition(kPIDLoopIdx),
+			rightMotor1->GetClosedLoopError(kPIDLoopIdx));
+	SmartDashboard::PutNumber("LeftPosition", leftMotor1->GetSelectedSensorPosition(kPIDLoopIdx));
+	SmartDashboard::PutNumber("LeftError", leftMotor1->GetClosedLoopError(kPIDLoopIdx));
+	SmartDashboard::PutNumber("RightPosition", rightMotor1->GetSelectedSensorPosition(kPIDLoopIdx));
+	SmartDashboard::PutNumber("RightError", rightMotor1->GetClosedLoopError(kPIDLoopIdx));
 
+
+}
+
+void DriveBase::DisablePID() {
+	leftMotor1->Set(ControlMode::PercentOutput,0);
+	rightMotor1->Set(ControlMode::PercentOutput,0);
+
+}
