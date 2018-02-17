@@ -91,8 +91,8 @@ void DriveBase::AutoShift(double upshift, double downshift){
 }
 
 void DriveBase::ShiftingInfo(){
-	SmartDashboard::PutNumber("Upshift", 1000);
-	SmartDashboard::PutNumber("Downshift", 750);
+	SmartDashboard::PutNumber("Upshift", 900);
+	SmartDashboard::PutNumber("Downshift", 700);
 }
 
 void DriveBase::ArcadeDrive(float moveValue, float rotateValue){

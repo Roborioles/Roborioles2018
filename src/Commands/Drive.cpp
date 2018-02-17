@@ -24,9 +24,9 @@ Drive::Drive(): frc::Command() {
 
 // Called just before this Command runs the first time
 void Drive::Initialize() {
-	up = SmartDashboard::GetNumber("Upshift", 800);
-	down = SmartDashboard::GetNumber("Downshift", 750);
-	SmartDashboard::PutNumber("NewValue", up);
+	up = SmartDashboard::GetNumber("Upshift", 900);
+	down = SmartDashboard::GetNumber("Downshift", 700);
+	//SmartDashboard::PutNumber("NewValue", up);
 
 }
 

@@ -63,11 +63,11 @@ void RobotMap::init() {
     elevatorElevatorBrake.reset(new frc::Solenoid(0, 2));
     lw->AddActuator("Elevator", "ElevatorBrake", elevatorElevatorBrake);
     
-    intakeSubIntakeMotor1.reset(new frc::Talon(1));
-    lw->AddActuator("IntakeSub", "IntakeMotor1", std::static_pointer_cast<frc::Talon>(intakeSubIntakeMotor1));
+    intakeSubIntakeMotor1.reset(new frc::Spark(1));
+    lw->AddActuator("IntakeSub", "IntakeMotor1", std::static_pointer_cast<frc::Spark>(intakeSubIntakeMotor1));
     
-    intakeSubIntakeMotor2.reset(new frc::Talon(2));
-    lw->AddActuator("IntakeSub", "IntakeMotor2", std::static_pointer_cast<frc::Talon>(intakeSubIntakeMotor2));
+    intakeSubIntakeMotor2.reset(new frc::Spark(2));
+    lw->AddActuator("IntakeSub", "IntakeMotor2", std::static_pointer_cast<frc::Spark>(intakeSubIntakeMotor2));
     
     intakeSubClamper.reset(new frc::Solenoid(0, 0));
     lw->AddActuator("IntakeSub", "Clamper", intakeSubClamper);
