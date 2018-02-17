@@ -27,6 +27,8 @@ private:
 	
 	
 	
+	
+	
 	std::shared_ptr<frc::Joystick> gamePad;
 	std::shared_ptr<frc::JoystickButton> intakeClose;
 	std::shared_ptr<frc::JoystickButton> intakeOpen;

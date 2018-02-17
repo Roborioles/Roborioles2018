@@ -87,6 +87,7 @@ void Robot::TeleopInit() {
 	Robot::elevator->Init(true);
 	Robot::driveBase->DisablePID();
 	Robot::driveBase->EncoderReset();
+	Robot::driveBase->ResetAngle();
 }
 
 void Robot::TeleopPeriodic() {

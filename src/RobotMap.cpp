@@ -24,6 +24,7 @@ std::shared_ptr<WPI_TalonSRX> RobotMap::driveBaseRightMotor2;
 std::shared_ptr<frc::Compressor> RobotMap::driveBaseCompressor;
 std::shared_ptr<frc::Solenoid> RobotMap::driveBaseShiftSolenoid;
 std::shared_ptr<frc::AnalogInput> RobotMap::driveBasePressureSensor;
+std::shared_ptr<PigeonIMU> RobotMap::driveBasePigeonIMU;
 std::shared_ptr<WPI_TalonSRX> RobotMap::elevatorElevatorMotor;
 std::shared_ptr<frc::Solenoid> RobotMap::elevatorElevatorBrake;
 std::shared_ptr<frc::SpeedController> RobotMap::intakeSubIntakeMotor1;
@@ -56,6 +57,9 @@ void RobotMap::init() {
     
     driveBasePressureSensor.reset(new frc::AnalogInput(0));
     lw->AddSensor("DriveBase", "PressureSensor", driveBasePressureSensor);
+    
+    driveBasePigeonIMU.reset(new PigeonIMU(20));
+    
     
     elevatorElevatorMotor.reset(new WPI_TalonSRX(5));
     
