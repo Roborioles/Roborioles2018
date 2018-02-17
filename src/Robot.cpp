@@ -65,7 +65,8 @@ void Robot::AutonomousInit() {
 	Robot::intakeSub->openIntake(false);
 	Robot::driveBase->EncoderReset();
 
-	autonomousCommand = chooser.GetSelected();
+	//autonomousCommand = chooser.GetSelected();
+	autonomousCommand = new AutonomousCommand();
 	if (autonomousCommand != nullptr)
 		autonomousCommand->Start();
 }
@@ -85,6 +86,7 @@ void Robot::TeleopInit() {
 	cmd->Start();
 	Robot::elevator->Init(true);
 	Robot::driveBase->DisablePID();
+	Robot::driveBase->EncoderReset();
 }
 
 void Robot::TeleopPeriodic() {
