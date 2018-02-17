@@ -204,8 +204,8 @@ void DriveBase::EncoderReset(){
 	rightMotor1->SetSelectedSensorPosition(0, kPIDLoopIdx, kTimeoutMs);
 }
 
-void DriveBase::AutoDrive(){
-		double targetPositionRotations = 1.25 * 10.0 * 4096; /* 50 (NOT) Rotations in either direction */
+void DriveBase::AutoDrive(double distance){
+		double targetPositionRotations = 2.5 * 10.0 * 4096; /* 50 (NOT) Rotations in either direction */
 		leftMotor1->Set(ControlMode::Position, targetPositionRotations); /* 50 rotations in either direction */
 		rightMotor1->Set(ControlMode::Position, targetPositionRotations); /* 50 rotations in either direction */
 }

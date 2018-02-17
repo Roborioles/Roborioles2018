@@ -47,7 +47,7 @@ public:
 	void ArcadeDrive(float moveValue, float rotateValue);
 	float Limit(float num);
 	void EncoderReset();
-	void AutoDrive();
+	void AutoDrive(double distance);
 	void PrintValues();
 	void DisablePID();
 private:
