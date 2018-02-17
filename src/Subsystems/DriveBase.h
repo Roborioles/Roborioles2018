@@ -50,6 +50,7 @@ public:
 	void AutoDrive(double distance);
 	void PrintValues();
 	void DisablePID();
+	void RotateToAngle(double angle, double speed);
 private:
 
 };

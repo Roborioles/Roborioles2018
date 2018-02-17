@@ -210,6 +210,20 @@ void DriveBase::AutoDrive(double distance){
 		rightMotor1->Set(ControlMode::Position, targetPositionRotations); /* 50 rotations in either direction */
 }
 
+void DriveBase::RotateToAngle(double angle, double speed) {
+	if(angle>0) {
+		leftMotor1->Set(ControlMode::PercentOutput,  speed);
+		leftMotor2->Set(ControlMode::PercentOutput,  speed);
+		rightMotor1->Set(ControlMode::PercentOutput, -speed);
+		rightMotor2->Set(ControlMode::PercentOutput, -speed);
+	} else {
+		leftMotor1->Set(ControlMode::PercentOutput,  -speed);
+		leftMotor2->Set(ControlMode::PercentOutput,  -speed);
+		rightMotor1->Set(ControlMode::PercentOutput, speed);
+		rightMotor2->Set(ControlMode::PercentOutput, speed);
+	}
+}
+
 void DriveBase::PrintValues(){
 	int lefterror = 0;
 	int righterror = 0;
