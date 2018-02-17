@@ -51,6 +51,7 @@ void IntakeSub::openIntake(bool onOff){
 
 
 void IntakeSub::gamepadControl(double left, double right){
+	left = left * -1.0;
 	intakeMotor1->Set(left);
 	intakeMotor2->Set(right);
 }
