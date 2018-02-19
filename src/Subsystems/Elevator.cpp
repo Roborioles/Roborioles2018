@@ -109,19 +109,22 @@ void Elevator::ElevatorExecute(){
 	else if (povValue == 0){
 		targetMode = false;
 		elevatorBrake->Set(false);
-		elevatorMotor->Set(ControlMode::PercentOutput,0.5);
+		frc::SmartDashboard::PutString("DB/String 8","brake off");
+		elevatorMotor->Set(ControlMode::PercentOutput,0.8);
 		isManualMoving = true;
 	}
 	else if (povValue == 180){
 		targetMode = false;
 		elevatorBrake->Set(false);
-		elevatorMotor->Set(ControlMode::PercentOutput,-0.20);
+		frc::SmartDashboard::PutString("DB/String 8","brake off");
+		elevatorMotor->Set(ControlMode::PercentOutput,-0.60);
 		isManualMoving = true;
 	}
 	else if (povValue == -1){
 		incrementButtonDown = false;
 		if (!targetMode && isManualMoving && motorStopCount < 0){
 			elevatorBrake->Set(true);
+			frc::SmartDashboard::PutString("DB/String 8","brake on");
 			isManualMoving = false;
 			motorStopCount = 0;
 		}
@@ -143,6 +146,7 @@ void Elevator::ElevatorExecute(){
 }
 
 void Elevator::ElevatorExecuteTarget(){
+	SetPIDs();
 	//process move
 	double goThreshold = 1.5;
 	double stopThreshold = 0.25;
@@ -185,6 +189,7 @@ void Elevator::ElevatorExecuteTarget(){
 		}
 		//open brake
 		elevatorBrake->Set(false);
+		frc::SmartDashboard::PutString("DB/String 8","brake off");
 
 
 	}
@@ -210,6 +215,7 @@ void Elevator::ElevatorExecuteTarget(){
 		}
 		//open brake
 		elevatorBrake->Set(false);
+		frc::SmartDashboard::PutString("DB/String 8","brake off");
 	}
 	else{
 		isTargetMoving = false;
@@ -220,6 +226,7 @@ void Elevator::ElevatorExecuteTarget(){
 		//elevatorMotor->Set(ControlMode::PercentOutput,0);
 		//close brake
 		elevatorBrake->Set(true);
+		frc::SmartDashboard::PutString("DB/String 8","brake on");
 	}
 
 }
@@ -229,7 +236,7 @@ void Elevator::ElevatorMoveUp(){
 		targetPos = (elevatorMotor->GetSelectedSensorPosition(0))/4096.0;
 		targetMode = true;
 	}
-	targetPos += 8.0;
+	targetPos += 4.0;
 	frc::SmartDashboard::PutString("DB/String 1",std::to_string(targetPos));
 }
 
@@ -238,34 +245,36 @@ void Elevator::ElevatorMoveDown(){
 		targetPos = (elevatorMotor->GetSelectedSensorPosition(0))/4096.0;
 		targetMode = true;
 	}
-	targetPos -= 8.0;
+	targetPos -= 4.0;
 	frc::SmartDashboard::PutString("DB/String 1",std::to_string(targetPos));
 }
 
 //Move to setpoints
 void Elevator::ElevatorGoToInches(double inches){
-	ElevatorGoToRevolutions(inches*2.73258);
+	ElevatorGoToRevolutions(inches*0.5098);
 }
 void Elevator::ElevatorGoToFloor(){
 	ElevatorGoToInches(0);
 }
 void Elevator::ElevatorGoToExchange(){
 	ElevatorGoToInches(2);
-	//should be 2
+	//Height in inches for exchange (tied to button A)
 }
 void Elevator::ElevatorGoToSwitch(){
 	ElevatorGoToInches(21);
-	//should be 21
+	//Height in inches for switch (tied to button B)
 }
 void Elevator::ElevatorGoToScale(){
 	ElevatorGoToInches(62);
+	//Height in inches for scale (tied to button X)
 }
 void Elevator::ElevatorGoToHighScale(){
 	ElevatorGoToInches(74);
+	//Height in inches for high scale (tied to button Y)
 }
 
 void Elevator::PartyLight(bool isMoving,double encoderValue){
-	double switchSpot=66;
+	double switchSpot=66 ;
 	double lowScaleSpot=137.5;
 	double midScaleSpot=170.5;
 	double highScaleSpot=203.5;
@@ -313,5 +322,34 @@ void Elevator::PartyLight(bool isMoving,double encoderValue){
 		}
 	}
 }
-
-
+void Elevator::SetPIDs(){
+	std::string pstring = frc::SmartDashboard::GetString("DB/String 5", "0.05");
+	double pdouble = 0.05;
+	/*When the p-value is too large it moves very jumpy. A larger p-value increases the strength of the motor.
+	 *When it is too low it won't even reach the target location.
+	 */
+	if (pstring.length() > 0) {
+		pdouble = std::stod(pstring);
+		}
+	std::string istring = frc::SmartDashboard::GetString("DB/String 6", "0.0");
+	double idouble = 0;
+	/*The i-value must be pretty small. A large i-value causes the i-value to oscillate greatly.
+	 * If the i-value is too small it takes a very long time to reach the target location.
+	 */
+	if (istring.length() > 0) {
+		idouble = std::stod(istring);
+		}
+	std::string dstring = frc::SmartDashboard::GetString("DB/String 7", "0.0");
+	double ddouble = 0;
+	/*Putting the d-value to 100 freaked out the motor. D-value appears to make the motor less jumpy.
+	 * Further testing is needed to see how high the d-value can be
+	 */
+	if (dstring.length() > 0) {
+		ddouble = std::stod(dstring);
+		}
+	/* set closed loop gains in slot0 */
+	elevatorMotor->Config_kF(kPIDLoopIdx, 0, kTimeoutMs);
+	elevatorMotor->Config_kP(kPIDLoopIdx, pdouble, kTimeoutMs);
+	elevatorMotor->Config_kI(kPIDLoopIdx, idouble, kTimeoutMs);
+	elevatorMotor->Config_kD(kPIDLoopIdx, ddouble, kTimeoutMs);
+}
