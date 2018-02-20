@@ -65,6 +65,8 @@ void Robot::AutonomousInit() {
 	autonomousCommand = chooser.GetSelected();
 	if (autonomousCommand != nullptr)
 		autonomousCommand->Start();
+
+	Robot::elevator->Init();
 }
 
 void Robot::AutonomousPeriodic() {
@@ -80,7 +82,7 @@ void Robot::TeleopInit() {
 		autonomousCommand->Cancel();
 	cmd.reset(new Drive());
 	cmd->Start();
-	Robot::elevator->Init(true);
+	Robot::elevator->Init();
 }
 
 void Robot::TeleopPeriodic() {

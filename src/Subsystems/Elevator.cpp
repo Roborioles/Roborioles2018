@@ -54,16 +54,15 @@ void Elevator::Periodic() {
 // Put methods for controlling this subsystem
 // here. Call these from Commands.
 
-void Elevator::Init(bool pid){
+void Elevator::Init(){
 	// * * * * * CHANGE MOTOR AND SOLENOID IDS * * * * * * * * * *
-
-	isPID = pid;
 	/* lets grab the 360 degree position of the MagEncoder's absolute position */
 	//int absolutePosition = elevatorMotor->GetSelectedSensorPosition(0) & 0xFFF; /* mask out the bottom12 bits, we don't care about the wrap arounds */
 	/* use the low level API to set the quad encoder signal */
 	//elevatorMotor->SetSelectedSensorPosition(absolutePosition, kPIDLoopIdx, kTimeoutMs);
-	elevatorMotor->SetSelectedSensorPosition(0, kPIDLoopIdx, kTimeoutMs);
 
+	elevatorMotor->SetSelectedSensorPosition(0, kPIDLoopIdx, kTimeoutMs);
+	targetPos = 0;
 	/* choose the sensor and sensor direction */
 	elevatorMotor->ConfigSelectedFeedbackSensor(FeedbackDevice::CTRE_MagEncoder_Relative, kPIDLoopIdx, kTimeoutMs);
 	elevatorMotor->SetSensorPhase(true);
@@ -75,20 +74,21 @@ void Elevator::Init(bool pid){
 	elevatorMotor->ConfigPeakOutputForward(1, kTimeoutMs);
 	elevatorMotor->ConfigPeakOutputReverse(-1, kTimeoutMs);
 
-	elevatorMotor->Set(ControlMode::Position,0);
-	targetPos = 0;
+	//elevatorMotor->Set(ControlMode::Position,0);
+	//targetPos = 0;
 
-	if(pid){
-		/* set closed loop gains in slot0 */
-		elevatorMotor->Config_kF(kPIDLoopIdx, 0, kTimeoutMs);
-		elevatorMotor->Config_kP(kPIDLoopIdx, 0.07, kTimeoutMs);
-		elevatorMotor->Config_kI(kPIDLoopIdx, 0, kTimeoutMs);
-		elevatorMotor->Config_kD(kPIDLoopIdx, 0, kTimeoutMs);
-	}
+
+	/* set closed loop gains in slot0 */
+	elevatorMotor->Config_kF(kPIDLoopIdx, 0, kTimeoutMs);
+	elevatorMotor->Config_kP(kPIDLoopIdx, 0.12, kTimeoutMs);
+	elevatorMotor->Config_kI(kPIDLoopIdx, 0, kTimeoutMs);
+	elevatorMotor->Config_kD(kPIDLoopIdx, 0, kTimeoutMs);
+
 }
 
 void Elevator::ElevatorGoToRevolutions(double newTargetPos){
 	targetPos = newTargetPos;
+	isGoingToFloor = false;
 	targetMode = true;
 	frc::SmartDashboard::PutString("DB/String 1",std::to_string(targetPos));
 }
@@ -96,51 +96,67 @@ void Elevator::ElevatorGoToRevolutions(double newTargetPos){
 void Elevator::ElevatorExecute(){
 	double encoderValue = elevatorMotor->GetSelectedSensorPosition(0)/4096.0;
 	frc::SmartDashboard::PutString("DB/String 0",std::to_string(encoderValue));
+	//check for bottom limit switch
+	bool bottomSwitch= elevatorMotor->GetSensorCollection().IsRevLimitSwitchClosed();
+	if (isGoingToFloor){
+		if (!bottomSwitch){
+			double encoderValue = elevatorMotor->GetSelectedSensorPosition(0)/4096.0;
+			double speed = encoderValue <= 3 ? -0.2 : -0.4;
+			elevatorMotor->Set(ControlMode::PercentOutput,speed);
+		}
+		else{
+			elevatorMotor->Set(ControlMode::PercentOutput,0);
+			isGoingToFloor = false;
+		}
+	}
+	/*if(!bottomSwitch && bottomLimitHit){
+		elevatorMotor->SetSelectedSensorPosition(0, kPIDLoopIdx, kTimeoutMs);
+	}
+	bottomLimitHit = bottomSwitch;*/
+
 	//look for d-pad values
 	int povValue = Robot::oi->getGamePad()->GetPOV(0);
 	if (povValue == 270 && !incrementButtonDown){
 		ElevatorMoveDown();
 		incrementButtonDown = true;
+		isGoingToFloor = false;
 	}
 	else if (povValue == 90 && !incrementButtonDown){
 		ElevatorMoveUp();
 		incrementButtonDown = true;
+		isGoingToFloor = false;
 	}
 	else if (povValue == 0){
 		targetMode = false;
-		elevatorBrake->Set(false);
-		frc::SmartDashboard::PutString("DB/String 8","brake off");
 		elevatorMotor->Set(ControlMode::PercentOutput,0.8);
 		isManualMoving = true;
+		isGoingToFloor = false;
 	}
 	else if (povValue == 180){
 		targetMode = false;
-		elevatorBrake->Set(false);
-		frc::SmartDashboard::PutString("DB/String 8","brake off");
-		elevatorMotor->Set(ControlMode::PercentOutput,-0.60);
+		if (encoderValue >= 0){
+			elevatorMotor->Set(ControlMode::PercentOutput,-0.60);
+		}
+		else {
+			elevatorMotor->Set(ControlMode::PercentOutput,0);
+		}
 		isManualMoving = true;
+		isGoingToFloor = false;
 	}
 	else if (povValue == -1){
 		incrementButtonDown = false;
-		if (!targetMode && isManualMoving && motorStopCount < 0){
-			elevatorBrake->Set(true);
-			frc::SmartDashboard::PutString("DB/String 8","brake on");
+		if (!targetMode && isManualMoving){
 			isManualMoving = false;
-			motorStopCount = 0;
+			double encoderValue = elevatorMotor->GetSelectedSensorPosition(0)/4096.0;
+			ElevatorGoToRevolutions(encoderValue);
 		}
 	}
 	if(targetMode){
 		ElevatorExecuteTarget();
-	}
-		// * * stop delay is 20ms*(maxStopCount-1)
-	int maxStopCount = 8;
-	if(motorStopCount >= maxStopCount){
-		//stop motor
-		elevatorMotor->Set(ControlMode::PercentOutput,0);
-		motorStopCount = -1;
-	}
-	else if(motorStopCount >= 0){
-		motorStopCount += 1;
+		encoderValue = elevatorMotor->GetSelectedSensorPosition(0)/4096.0;
+		if(targetPos == 0 && encoderValue <= 0.1){
+			elevatorMotor->Set(ControlMode::PercentOutput,0);
+		}
 	}
 	PartyLight(isManualMoving || isTargetMoving, encoderValue);
 }
@@ -148,99 +164,30 @@ void Elevator::ElevatorExecute(){
 void Elevator::ElevatorExecuteTarget(){
 	SetPIDs();
 	//process move
-	double goThreshold = 1.5;
-	double stopThreshold = 0.25;
-	double posThreshold = isTargetMoving ? stopThreshold : goThreshold;
-
-	//double maxSpeed = .5;
-	double minSpeed = .3;
-	double taperStart = 6.0;
-	double taperEnd = 3.0;
-	//double elevatorSpeed = .1;
-	double upElevatorSpeed = 0.8;
-	double downElevatorSpeed = 0.3;
 
 	double encoderValue = elevatorMotor->GetSelectedSensorPosition(0)/4096.0;
 	double difference = targetPos - encoderValue;
 	frc::SmartDashboard::PutString("DB/String 2",std::to_string(difference));
 
-	if(difference > posThreshold){
-		//keep moving toward targetPos -> move up
-		isTargetMoving = true;
-		motorStopCount = -1;
-		if (isPID) {
-			//set target sensor
-			elevatorMotor->Set(ControlMode::Position,targetPos*4096.0);
-		} else {
-			double actualSpeed = upElevatorSpeed;
-			if (difference < taperStart) {
-				if (difference < taperEnd) {
-					actualSpeed = minSpeed;
-				}
-				else {
-					actualSpeed = minSpeed + ((upElevatorSpeed - minSpeed) * (difference - taperEnd))/(taperStart - taperEnd);
-				}
-			}
-
-			//start motor
-
-			elevatorMotor->Set(ControlMode::PercentOutput,actualSpeed);
-			frc::SmartDashboard::PutString("DB/String 3",std::to_string(actualSpeed));
-		}
-		//open brake
-		elevatorBrake->Set(false);
-		frc::SmartDashboard::PutString("DB/String 8","brake off");
-
-
-	}
-	else if(difference < -posThreshold){
-		//move down
-		isTargetMoving = true;
-		motorStopCount = -1;
-		if (isPID) {
-			//set target sensor
-			elevatorMotor->Set(ControlMode::Position,targetPos*4096.0);
-		} else {
-			//start motor
-			double actualSpeed = downElevatorSpeed;
-			if (difference < taperStart) {
-				if (difference < taperEnd) {
-					actualSpeed = minSpeed;
-				}
-				else {
-					actualSpeed = minSpeed + ((downElevatorSpeed - minSpeed) * (difference - taperEnd))/(taperStart - taperEnd);
-				}
-			}
-			elevatorMotor->Set(ControlMode::PercentOutput,-actualSpeed);
-		}
-		//open brake
-		elevatorBrake->Set(false);
-		frc::SmartDashboard::PutString("DB/String 8","brake off");
-	}
-	else{
-		isTargetMoving = false;
-		if(motorStopCount == -1){
-			motorStopCount = 0;
-		}
-		//stop motor
-		//elevatorMotor->Set(ControlMode::PercentOutput,0);
-		//close brake
-		elevatorBrake->Set(true);
-		frc::SmartDashboard::PutString("DB/String 8","brake on");
-	}
+	elevatorMotor->Set(ControlMode::Position,targetPos*4096.0);
 
 }
 
 void Elevator::ElevatorMoveUp(){
+	isGoingToFloor = false;
 	if(!targetMode){
 		targetPos = (elevatorMotor->GetSelectedSensorPosition(0))/4096.0;
 		targetMode = true;
 	}
-	targetPos += 4.0;
+	bool topLimit = elevatorMotor->GetSensorCollection().IsFwdLimitSwitchClosed();
+	if(!topLimit){
+		targetPos += 4.0;
+	}
 	frc::SmartDashboard::PutString("DB/String 1",std::to_string(targetPos));
 }
 
 void Elevator::ElevatorMoveDown(){
+	isGoingToFloor = false;
 	if(!targetMode){
 		targetPos = (elevatorMotor->GetSelectedSensorPosition(0))/4096.0;
 		targetMode = true;
@@ -254,23 +201,38 @@ void Elevator::ElevatorGoToInches(double inches){
 	ElevatorGoToRevolutions(inches*0.5098);
 }
 void Elevator::ElevatorGoToFloor(){
-	ElevatorGoToInches(0);
+	/*isGoingToFloor = true;
+	targetMode = false;
+	targetPos = 0;
+	bool bottomSwitch= elevatorMotor->GetSensorCollection().IsRevLimitSwitchClosed();
+	if (!bottomSwitch){
+		double encoderValue = elevatorMotor->GetSelectedSensorPosition(0)/4096.0;
+		double speed = encoderValue <= 3 ? -0.2 : -0.4;
+		elevatorMotor->Set(ControlMode::PercentOutput,speed);
+	}
+	else{
+		elevatorMotor->Set(ControlMode::PercentOutput,0);
+	}*/
+	ElevatorGoToRevolutions(0);
 }
 void Elevator::ElevatorGoToExchange(){
-	ElevatorGoToInches(2);
+	//ElevatorGoToRevolutions(1.254);
+	ElevatorGoToRevolutions(3.254);
 	//Height in inches for exchange (tied to button A)
 }
 void Elevator::ElevatorGoToSwitch(){
-	ElevatorGoToInches(21);
-	//Height in inches for switch (tied to button B)
+	//ElevatorGoToRevolutions(11.780);
+	ElevatorGoToRevolutions(13.780);
+	//Height in revolutions for switch (tied to button B)
 }
 void Elevator::ElevatorGoToScale(){
-	ElevatorGoToInches(62);
-	//Height in inches for scale (tied to button X)
+	//ElevatorGoToRevolutions(35.657);
+	ElevatorGoToRevolutions(37.657);
+	//Height in revolutions for scale (tied to button X)
 }
 void Elevator::ElevatorGoToHighScale(){
-	ElevatorGoToInches(74);
-	//Height in inches for high scale (tied to button Y)
+	ElevatorGoToRevolutions(39.045);
+	//Height in revolutions for high scale (tied to button Y)
 }
 
 void Elevator::PartyLight(bool isMoving,double encoderValue){
@@ -323,8 +285,8 @@ void Elevator::PartyLight(bool isMoving,double encoderValue){
 	}
 }
 void Elevator::SetPIDs(){
-	std::string pstring = frc::SmartDashboard::GetString("DB/String 5", "0.05");
-	double pdouble = 0.05;
+	std::string pstring = frc::SmartDashboard::GetString("DB/String 5", "0.12");
+	double pdouble = 0.12;
 	/*When the p-value is too large it moves very jumpy. A larger p-value increases the strength of the motor.
 	 *When it is too low it won't even reach the target location.
 	 */
