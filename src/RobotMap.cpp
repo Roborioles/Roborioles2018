@@ -26,6 +26,7 @@ std::shared_ptr<frc::Solenoid> RobotMap::driveBaseShiftSolenoid;
 std::shared_ptr<frc::AnalogInput> RobotMap::driveBasePressureSensor;
 std::shared_ptr<WPI_TalonSRX> RobotMap::elevatorElevatorMotor;
 std::shared_ptr<frc::Solenoid> RobotMap::elevatorElevatorBrake;
+std::shared_ptr<frc::SpeedController> RobotMap::elevatorElevatorLEDs;
 std::shared_ptr<frc::SpeedController> RobotMap::intakeSubIntakeMotor1;
 std::shared_ptr<frc::SpeedController> RobotMap::intakeSubIntakeMotor2;
 std::shared_ptr<frc::Solenoid> RobotMap::intakeSubClamper;
@@ -62,6 +63,9 @@ void RobotMap::init() {
     
     elevatorElevatorBrake.reset(new frc::Solenoid(0, 2));
     lw->AddActuator("Elevator", "ElevatorBrake", elevatorElevatorBrake);
+    
+    elevatorElevatorLEDs.reset(new frc::Talon(4));
+    lw->AddActuator("Elevator", "ElevatorLEDs", std::static_pointer_cast<frc::Talon>(elevatorElevatorLEDs));
     
     intakeSubIntakeMotor1.reset(new frc::Spark(1));
     lw->AddActuator("IntakeSub", "IntakeMotor1", std::static_pointer_cast<frc::Spark>(intakeSubIntakeMotor1));
