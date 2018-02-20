@@ -245,13 +245,37 @@ void Elevator::ElevatorGoToHighScale(){
 }
 
 void Elevator::PartyLight(bool isMoving,double encoderValue){
-	double switchSpot=12.5 ;
+	double switchSpot=12.5;
 	double lowScaleSpot=36;
 	double midScaleSpot=37;
 	double highScaleSpot=38;
+	double IML=-.08;
+	double SSL=.77;
+	double LSL=.81;
+	double MSL=.69;
+	double HSL=.61;
+	double DDL=.91;
 
-
-	if(encoderValue < switchSpot){
+	if(isMoving){
+		elevatorLEDs->Set(IML);
+	}
+	else if(switchSpot >= encoderValue && encoderValue <= 14.5){
+		elevatorLEDs->Set(SSL);
+	}
+	else if (lowScaleSpot >= encoderValue && encoderValue <= 36.25){
+		elevatorLEDs->Set(LSL);
+	}
+	else if (midScaleSpot >= encoderValue && encoderValue <= 37.4){
+		elevatorLEDs->Set(MSL);
+	}
+	else if (highScaleSpot >= encoderValue && encoderValue <= 42){
+		elevatorLEDs->Set(HSL);
+	}
+	else{
+		elevatorLEDs->Set(DDL);
+	}
+}
+	/*if(encoderValue < switchSpot){
 		if(isMoving){
 			elevatorLEDs->Set(-.06);
 		}
@@ -293,6 +317,9 @@ void Elevator::PartyLight(bool isMoving,double encoderValue){
 		}
 	}
 }
+*/
+
+
 void Elevator::SetPIDs(){
 	std::string pstring = frc::SmartDashboard::GetString("DB/String 5", "0.12");
 	double pdouble = 0.12;
