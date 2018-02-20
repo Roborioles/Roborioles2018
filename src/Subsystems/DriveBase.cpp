@@ -206,13 +206,15 @@ void DriveBase::EncoderReset(){
 }
 
 void DriveBase::AutoDrive(double distance){
-		double targetPositionRotations = 2.5 * 10.0 * 4096; /* 50 (NOT) Rotations in either direction */
+		distance = distance*12*.01577287;
+		double targetPositionRotations = distance * 10.0 * 4096; /* 50 (NOT) Rotations in either direction */
 		leftMotor1->Set(ControlMode::Position, targetPositionRotations); /* 50 rotations in either direction */
 		rightMotor1->Set(ControlMode::Position, targetPositionRotations); /* 50 rotations in either direction */
 }
 
 bool DriveBase::isOnTarget(double distance) {
-	if (distance - 3720 < leftMotor1->GetSelectedSensorPosition(kPIDLoopIdx) && distance+3720>leftMotor1->GetSelectedSensorPosition(kPIDLoopIdx))
+	distance = distance*12*.01577287;
+	if ((distance - 3720) < leftMotor1->GetSelectedSensorPosition(kPIDLoopIdx)&&leftMotor1->GetSelectedSensorPosition(kPIDLoopIdx)<(distance+3720))
 		return true;
 	else
 		return false;

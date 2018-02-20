@@ -32,8 +32,8 @@ AutoCmdGrp::AutoCmdGrp(int position): CommandGroup() {
 
 
 	//left-left
-	if (true) {
-	AddSequential(new AutoDrive(2.5));
+	if (false) {
+	AddSequential(new AutoDrive(13.6));
 	//AddParallel(new ElevatorSwitch());
 	AddSequential(new AutoRotate(-90,.5));
 	AddSequential(new AutoDrive(1));
@@ -42,8 +42,8 @@ AutoCmdGrp::AutoCmdGrp(int position): CommandGroup() {
 
 	//right-right
 	else if (false) {
-	AddSequential(new AutoDrive(3));
-	AddParallel(new ElevatorSwitch());
+	AddSequential(new AutoDrive(13.6));
+	//AddParallel(new ElevatorSwitch());
 	AddSequential(new AutoRotate(90,.5));
 	AddSequential(new AutoDrive(2));
 	AddSequential(new IntakeOpenCmd(true));
@@ -51,8 +51,14 @@ AutoCmdGrp::AutoCmdGrp(int position): CommandGroup() {
 
 
 	//left-right
-	else if (false) {
-
+	else if (true) {
+		AddSequential(new AutoDrive(20));
+		//AddParallel(new ElevatorSwitch());
+		AddSequential(new AutoRotate(-90,.5));
+		AddSequential(new AutoDrive(17.333));
+		AddSequential(new AutoRotate(-90,.5));
+		//AddSequential(new AutoDrive());
+		AddSequential(new IntakeOpenCmd(true));
 	}
 
 
