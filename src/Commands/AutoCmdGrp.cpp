@@ -29,42 +29,70 @@ AutoCmdGrp::AutoCmdGrp(int position): CommandGroup() {
     // e.g. AddSequential(new Command1());
     //      AddSequential(new Command2());
     // these will run in order.
+	std::string gameData;
+	gameData = frc::DriverStation::GetInstance().GetGameSpecificMessage();
 
-
-	//left-left
-	if (false) {
-	AddSequential(new AutoDrive(13.6));
-	//AddParallel(new ElevatorSwitch());
-	AddSequential(new AutoRotate(-90,.5));
-	AddSequential(new AutoDrive(1));
-	AddSequential(new IntakeOpenCmd(true));
+	//1-left
+	if (position == 1 && gameData[0] == 'L' && true) { //check to see if this wants to be overriden
+		AddSequential(new AutoDrive(13.6));
+		//AddParallel(new ElevatorSwitch());
+		AddSequential(new AutoRotate(-90,.5));
+		AddSequential(new AutoDrive(2));
+		AddSequential(new IntakeOpenCmd(true));
 	}
 
-	//right-right
-	else if (false) {
-	AddSequential(new AutoDrive(13.6));
-	//AddParallel(new ElevatorSwitch());
-	AddSequential(new AutoRotate(90,.5));
-	AddSequential(new AutoDrive(2));
-	AddSequential(new IntakeOpenCmd(true));
+	//3-right
+	else if (position == 3 && gameData[0] == 'R' && true) { //check to see if this wants to be overriden
+		AddSequential(new AutoDrive(13.6));
+		//AddParallel(new ElevatorSwitch());
+		AddSequential(new AutoRotate(90,.5));
+		AddSequential(new AutoDrive(2));
+		AddSequential(new IntakeOpenCmd(true));
 	}
 
-
-	//left-right
-	else if (true) {
+	//1-right -- SWITCH OVERRIDE, SHOULD PROBBALY DO SCALE INSTEAD UNLESS SCALE IS ALSO BAD
+	else if (position == 1 && gameData[0] == 'R' && true) { //true being check if this wants to be used as override
 		AddSequential(new AutoDrive(20));
 		//AddParallel(new ElevatorSwitch());
 		AddSequential(new AutoRotate(-90,.5));
 		AddSequential(new AutoDrive(17.333));
 		AddSequential(new AutoRotate(-90,.5));
-		//AddSequential(new AutoDrive());
+		AddSequential(new AutoDrive(5));
+		AddSequential(new AutoRotate(-90,.5));
+		AddSequential(new AutoDrive(2));
 		AddSequential(new IntakeOpenCmd(true));
 	}
 
+	//3-left -- SWITCH OVERRIDE, SHOULD PROBABLY DO SCALE INSTEAD UNLESS SCALE IS ALSO BAD
+	else if (position == 3 && gameData[0] == 'L' && true) { //true being check if this wants to be used as override
+		AddSequential(new AutoDrive(20));
+		//AddParallel(new ElevatorSwitch());
+		AddSequential(new AutoRotate(90,.5));
+		AddSequential(new AutoDrive(17.333));
+		AddSequential(new AutoRotate(90,.5));
+		AddSequential(new AutoDrive(5));
+		AddSequential(new AutoRotate(90,.5));
+		AddSequential(new AutoDrive(2));
+		AddSequential(new IntakeOpenCmd(true));
+	}
 
+	//1-leftSCALE
+	else if (position == 1 && gameData[1] == 'L' && true) { //true being check override
+		AddSequential(new AutoDrive(27));
+		//AddParallel(new ElevatorScale());
+		AddSequential(new AutoRotate(-90,.5));
+		AddSequential(new AutoDrive(2));
+		AddSequential(new IntakeOpenCmd(true));
 
-	//right-left
-	else if (false) {
+	}
+
+	//3-rightSCALE
+	else if (position == 3 && gameData[1] == 'R' && true) { //true being check if want this
+		AddSequential(new AutoDrive(27));
+		//AddParallel(new ElevatorScale());
+		AddSequential(new AutoRotate(90,.5));
+		AddSequential(new AutoDrive(2));
+		AddSequential(new IntakeOpenCmd(true));
 
 	}
 
