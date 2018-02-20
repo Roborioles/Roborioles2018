@@ -49,22 +49,22 @@ void Elevate::Periodic() {
 // here. Call these from Commands.
 
 void Elevate::Raise(int position) {
-
-	// left
-	if (position==1) {
-		printf("Raising left\n");
-		if (leftElevate->Get()==frc::DoubleSolenoid::Value::kForward) {
-			leftElevate->Set(frc::DoubleSolenoid::Value::kOff);
-		} else {
-			leftElevate->Set(frc::DoubleSolenoid::Value::kForward);
-		}
-
-	} else { // right
-		printf("Raising Right\n");
-		if (rightElevate->Get()==frc::DoubleSolenoid::Value::kForward) {
-			rightElevate->Set(frc::DoubleSolenoid::Value::kOff);
-		} else {
-			rightElevate->Set(frc::DoubleSolenoid::Value::kForward);
+	if (deployTop->Get()==false){
+		// left
+		if (position==1) {
+			printf("Raising left\n");
+			if (leftElevate->Get()==frc::DoubleSolenoid::Value::kForward) {
+				leftElevate->Set(frc::DoubleSolenoid::Value::kOff);
+			} else {
+				leftElevate->Set(frc::DoubleSolenoid::Value::kForward);
+			}
+		} else { // right
+			printf("Raising Right\n");
+			if (rightElevate->Get()==frc::DoubleSolenoid::Value::kForward) {
+				rightElevate->Set(frc::DoubleSolenoid::Value::kOff);
+			} else {
+				rightElevate->Set(frc::DoubleSolenoid::Value::kForward);
+			}
 		}
 	}
 }
