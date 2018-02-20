@@ -156,7 +156,11 @@ void Elevator::ElevatorExecute(){
 		encoderValue = elevatorMotor->GetSelectedSensorPosition(0)/4096.0;
 		if(targetPos == 0 && encoderValue <= 0.1){
 			elevatorMotor->Set(ControlMode::PercentOutput,0);
+			isTargetMoving = false;
 		}
+	}
+	else{
+		isTargetMoving = false;
 	}
 	PartyLight(isManualMoving || isTargetMoving, encoderValue);
 }
@@ -168,7 +172,12 @@ void Elevator::ElevatorExecuteTarget(){
 	double encoderValue = elevatorMotor->GetSelectedSensorPosition(0)/4096.0;
 	double difference = targetPos - encoderValue;
 	frc::SmartDashboard::PutString("DB/String 2",std::to_string(difference));
-
+	if (difference > 1.5 || difference < -1.5){
+		isTargetMoving = true;
+	}
+	else{
+		isTargetMoving = false;
+	}
 	elevatorMotor->Set(ControlMode::Position,targetPos*4096.0);
 
 }
@@ -236,10 +245,10 @@ void Elevator::ElevatorGoToHighScale(){
 }
 
 void Elevator::PartyLight(bool isMoving,double encoderValue){
-	double switchSpot=66 ;
-	double lowScaleSpot=137.5;
-	double midScaleSpot=170.5;
-	double highScaleSpot=203.5;
+	double switchSpot=12.5 ;
+	double lowScaleSpot=36;
+	double midScaleSpot=37;
+	double highScaleSpot=38;
 
 
 	if(encoderValue < switchSpot){
