@@ -69,6 +69,7 @@ void Robot::AutonomousInit() {
 		autonomousCommand->Start();
 	Robot::elevate->Extend();
 	Robot::elevate->ElevateInit();
+	Robot::elevator->Init();
 }
 
 void Robot::AutonomousPeriodic() {
@@ -84,9 +85,10 @@ void Robot::TeleopInit() {
 		autonomousCommand->Cancel();
 	cmd.reset(new Drive());
 	cmd->Start();
-	Robot::elevator->Init(true);
+
 	Robot::elevate->Extend();
 	Robot::elevate->ElevateInit();
+	Robot::elevator->Init();
 }
 
 void Robot::TeleopPeriodic() {

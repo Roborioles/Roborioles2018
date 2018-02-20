@@ -79,6 +79,6 @@ void Elevate::Extend() {
 }
 
 void Elevate::ElevateInit() {
-	leftElevate->Set(frc::DoubleSolenoid::Value::kForward);
+	leftElevate->Set(frc::DoubleSolenoid::Value::kOff);
 	rightElevate->Set(frc::DoubleSolenoid::Value::kOff);
 }

@@ -29,7 +29,7 @@ void ElevatorHighScale::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void ElevatorHighScale::Execute() {
-	//Robot::elevator->ElevatorGoToHighScale();
+	Robot::elevator->ElevatorGoToHighScale();
 }
 
 // Make this return true when this Command no longer needs to run execute()
