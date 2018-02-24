@@ -34,8 +34,9 @@ public:
 	static std::shared_ptr<frc::Compressor> driveBaseCompressor;
 	static std::shared_ptr<frc::Solenoid> driveBaseShiftSolenoid;
 	static std::shared_ptr<frc::AnalogInput> driveBasePressureSensor;
+	static std::shared_ptr<PigeonIMU> driveBasePigeonIMU;
 	static std::shared_ptr<WPI_TalonSRX> elevatorElevatorMotor;
-	static std::shared_ptr<frc::Solenoid> elevatorElevatorBrake;
+	// static std::shared_ptr<frc::Solenoid> elevatorElevatorBrake;
 	static std::shared_ptr<frc::SpeedController> elevatorElevatorLEDs;
 	static std::shared_ptr<frc::SpeedController> intakeSubIntakeMotor1;
 	static std::shared_ptr<frc::SpeedController> intakeSubIntakeMotor2;

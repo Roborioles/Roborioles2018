@@ -24,8 +24,9 @@ std::shared_ptr<WPI_TalonSRX> RobotMap::driveBaseRightMotor2;
 std::shared_ptr<frc::Compressor> RobotMap::driveBaseCompressor;
 std::shared_ptr<frc::Solenoid> RobotMap::driveBaseShiftSolenoid;
 std::shared_ptr<frc::AnalogInput> RobotMap::driveBasePressureSensor;
+std::shared_ptr<PigeonIMU> RobotMap::driveBasePigeonIMU;
 std::shared_ptr<WPI_TalonSRX> RobotMap::elevatorElevatorMotor;
-std::shared_ptr<frc::Solenoid> RobotMap::elevatorElevatorBrake;
+//std::shared_ptr<frc::Solenoid> RobotMap::elevatorElevatorBrake;
 std::shared_ptr<frc::SpeedController> RobotMap::elevatorElevatorLEDs;
 std::shared_ptr<frc::SpeedController> RobotMap::intakeSubIntakeMotor1;
 std::shared_ptr<frc::SpeedController> RobotMap::intakeSubIntakeMotor2;
@@ -62,11 +63,14 @@ void RobotMap::init() {
     driveBasePressureSensor.reset(new frc::AnalogInput(0));
     lw->AddSensor("DriveBase", "PressureSensor", driveBasePressureSensor);
     
+    driveBasePigeonIMU.reset(new PigeonIMU(20));
+    
+    
     elevatorElevatorMotor.reset(new WPI_TalonSRX(5));
     
     
-    elevatorElevatorBrake.reset(new frc::Solenoid(1, 2));
-    lw->AddActuator("Elevator", "ElevatorBrake", elevatorElevatorBrake);
+    //elevatorElevatorBrake.reset(new frc::Solenoid(0, 2));
+    //lw->AddActuator("Elevator", "ElevatorBrake", elevatorElevatorBrake);
     
     elevatorElevatorLEDs.reset(new frc::Talon(4));
     lw->AddActuator("Elevator", "ElevatorLEDs", std::static_pointer_cast<frc::Talon>(elevatorElevatorLEDs));

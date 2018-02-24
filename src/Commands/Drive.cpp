@@ -24,6 +24,7 @@ Drive::Drive(): frc::Command() {
 
 // Called just before this Command runs the first time
 void Drive::Initialize() {
+
 	up = SmartDashboard::GetNumber("Upshift", 900);
 	down = SmartDashboard::GetNumber("Downshift", 700);
 	//SmartDashboard::PutNumber("NewValue", up);
@@ -34,6 +35,7 @@ void Drive::Initialize() {
 void Drive::Execute() {
 	Robot::driveBase->DriveWithJoysticks();
 	Robot::driveBase->AutoShift(up, down);
+	Robot::driveBase->PrintValues();
 	SmartDashboard::PutNumber("Pressure: ", Robot::driveBase->SensorReading());
 }
 
