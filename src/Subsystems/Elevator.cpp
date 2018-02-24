@@ -162,6 +162,7 @@ void Elevator::ElevatorExecute(){
 	else{
 		isTargetMoving = false;
 	}
+	encoderValue = elevatorMotor->GetSelectedSensorPosition(0)/4096.0;
 	PartyLight(isManualMoving || isTargetMoving, encoderValue);
 }
 
@@ -245,20 +246,24 @@ void Elevator::ElevatorGoToHighScale(){
 }
 
 void Elevator::PartyLight(bool isMoving,double encoderValue){
+	double Floor=1;
 	double switchSpot=12.5;
 	double lowScaleSpot=36;
 	double midScaleSpot=37;
 	double highScaleSpot=38;
-	double IML=-.08;
-	double SSL=.77;
-	double LSL=.81;
-	double MSL=.69;
-	double HSL=.61;
-	double DDL=.91;
+	double IML=-.87;
+	double FL=.57;
+	double EL=.64;
+	double SSL=.68;
+	double LSL=.77;
+	double MSL=.86;
+	double HSL=.90;
 
+/*
 	if(isMoving){
 		elevatorLEDs->Set(IML);
 	}
+	else if(encoderValue)
 	else if(switchSpot >= encoderValue && encoderValue <= 14.5){
 		elevatorLEDs->Set(SSL);
 	}
@@ -275,9 +280,10 @@ void Elevator::PartyLight(bool isMoving,double encoderValue){
 		elevatorLEDs->Set(DDL);
 	}
 }
+*/
 	/*if(encoderValue < switchSpot){
 		if(isMoving){
-			elevatorLEDs->Set(-.06);
+			elevatorLEDs->Set(IML);
 		}
 		else{
 			elevatorLEDs->Set(.67);
@@ -316,8 +322,30 @@ void Elevator::PartyLight(bool isMoving,double encoderValue){
 
 		}
 	}
+	*/
+	if(isMoving){
+		elevatorLEDs->Set(IML);
+	}
+	else if(encoderValue <= Floor){
+		elevatorLEDs->Set(FL);
+	}
+	else if(encoderValue <= switchSpot){
+		elevatorLEDs->Set(EL);
+	}
+	else if(encoderValue <= lowScaleSpot){
+		elevatorLEDs->Set(SSL);
+	}
+	else if(encoderValue <= midScaleSpot){
+		elevatorLEDs->Set(LSL);
+	}
+	else if(encoderValue <= highScaleSpot){
+		elevatorLEDs->Set(MSL);
+	}
+	else{
+		elevatorLEDs->Set(HSL);
+	}
+
 }
-*/
 
 
 void Elevator::SetPIDs(){
