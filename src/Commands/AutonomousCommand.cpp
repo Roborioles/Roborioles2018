@@ -26,17 +26,7 @@ AutonomousCommand::AutonomousCommand(): frc::Command() {
 // Called just before this Command runs the first time
 void AutonomousCommand::Initialize() {
 	Robot::driveBase->EncoderReset();
-
-	//call correct autonomous command group
-	if (SmartDashboard::GetBoolean("DB/Button 0", false)) {
-		autoCmd.reset(new AutoCmdGrp(1));
-	} else if (SmartDashboard::GetBoolean("DB/Button 1", false)) {
-		autoCmd.reset(new AutoCmdGrp(2));
-	} else if (SmartDashboard::GetBoolean("DB/Button 2", false)) {
-		autoCmd.reset(new AutoCmdGrp(3));
-	} else {
-		autoCmd.reset(new AutoCmdGrp(0));
-	}
+	autoCmd.reset(new AutoCmdGrp(0));
 	autoCmd->Start();
 }
 

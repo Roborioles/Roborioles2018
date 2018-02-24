@@ -59,31 +59,6 @@ void Robot::DisabledInit(){
 
 void Robot::DisabledPeriodic() {
 	frc::Scheduler::GetInstance()->Run();
-
-	//position
-	if (SmartDashboard::GetBoolean("DB/Button 0", false)) {
-		SmartDashboard::PutBoolean("DB/Button 1", false);
-		SmartDashboard::PutBoolean("DB/Button 2", false);
-		SmartDashboard::PutString("DB/String 0", "(1) Left Position");
-	} else if (SmartDashboard::GetBoolean("DB/Button 1", false)) {
-		SmartDashboard::PutBoolean("DB/Button 0", false);
-		SmartDashboard::PutBoolean("DB/Button 2", false);
-		SmartDashboard::PutString("DB/String 0", "(2) Middle Position");
-	} else if (SmartDashboard::GetBoolean("DB/Button 2", false)) {
-		SmartDashboard::PutBoolean("DB/Button 0", false);
-		SmartDashboard::PutBoolean("DB/Button 1", false);
-		SmartDashboard::PutString("DB/String 0", "(3) Right Position");
-	} else {
-		SmartDashboard::PutString("DB/String 0", "Auto Line");
-	}
-
-	//override
-	if (SmartDashboard::GetBoolean("DB/Button 3", false)){
-		SmartDashboard::PutString("DB/String 0", "SWITCH OVERRIDE");
-	} else {
-		SmartDashboard::PutString("DB/String 0", "");
-	}
-
 }
 
 void Robot::AutonomousInit() {

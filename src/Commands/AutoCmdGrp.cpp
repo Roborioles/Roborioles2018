@@ -29,82 +29,29 @@ AutoCmdGrp::AutoCmdGrp(int position): CommandGroup() {
     // e.g. AddSequential(new Command1());
     //      AddSequential(new Command2());
     // these will run in order.
-
-	//FMS game data (LLL, RRR, LRL, RLR)
 	std::string gameData;
 	gameData = frc::DriverStation::GetInstance().GetGameSpecificMessage();
 
-	//NO INPUT -- goes to auto line
-	if (position == 0) {
-		AddSequential(new AutoDrive(10));
-	}
-
-	//SWITCH DEFAULT
-
-	//1-left -- left position, goes to the left switch
-	else if (position == 1 && gameData[0] == 'L') {
+	//1-left
+	if (position == 1 && gameData[0] == 'L' && true) { //check to see if this wants to be overriden
 		AddSequential(new AutoDrive(13.6));
 		//AddParallel(new ElevatorSwitch());
 		AddSequential(new AutoRotate(-90,.5));
 		AddSequential(new AutoDrive(2));
 		AddSequential(new IntakeOpenCmd(true));
-
-		//puts it back to floor, ready for battle
-		AddSequential(new AutoDrive(-2));
-		AddParallel(new ElevatorFloor());
-		AddParallel(new IntakeOpenCmd(false));
 	}
 
 	//3-right
-	else if (position == 3 && gameData[0] == 'R') {
+	else if (position == 3 && gameData[0] == 'R' && true) { //check to see if this wants to be overriden
 		AddSequential(new AutoDrive(13.6));
 		//AddParallel(new ElevatorSwitch());
 		AddSequential(new AutoRotate(90,.5));
 		AddSequential(new AutoDrive(2));
 		AddSequential(new IntakeOpenCmd(true));
-
-		//puts it back to floor, ready for battle
-		AddSequential(new AutoDrive(-2));
-		AddParallel(new ElevatorFloor());
-		AddParallel(new IntakeOpenCmd(false));
 	}
 
-	//2-left
-	else if (position == 2 && gameData[0] == 'L') {
-		AddSequential(new AutoDrive(5));
-		AddParallel(new ElevatorSwitch());
-		AddSequential(new AutoRotate(90, .5));
-		AddSequential(new AutoDrive(4));
-		AddSequential(new AutoRotate(-90, .5));
-		AddSequential(new AutoDrive(7));
-		AddSequential(new IntakeOpenCmd(true));
-
-		//puts it back to floor, ready for battle
-		AddSequential(new AutoDrive(-2));
-		AddParallel(new ElevatorFloor());
-		AddParallel(new IntakeOpenCmd(false));
-	}
-
-	//2-right
-	else if (position == 2 && gameData[1] == 'R') {
-		AddSequential(new AutoDrive(5));
-		AddParallel(new ElevatorSwitch());
-		AddSequential(new AutoRotate(-90, .5));
-		AddSequential(new AutoDrive(2));
-		AddSequential(new AutoRotate(90, .5));
-		AddSequential(new AutoDrive(7));
-		AddSequential(new IntakeOpenCmd(true));
-
-		//puts it back to floor, ready for battle
-		AddSequential(new AutoDrive(-2));
-		AddParallel(new ElevatorFloor());
-		AddParallel(new IntakeOpenCmd(false));
-	}
-
-	//SWITCH OVERRIDE
-
-	//1-right
-	else if (position == 1 && gameData[0] == 'R' && !SmartDashboard::GetBoolean("DB/Button 3", false)) {
+	//1-right -- SWITCH OVERRIDE, SHOULD PROBBALY DO SCALE INSTEAD UNLESS SCALE IS ALSO BAD
+	else if (position == 1 && gameData[0] == 'R' && true) { //true being check if this wants to be used as override
 		AddSequential(new AutoDrive(20));
 		//AddParallel(new ElevatorSwitch());
 		AddSequential(new AutoRotate(-90,.5));
@@ -114,15 +61,10 @@ AutoCmdGrp::AutoCmdGrp(int position): CommandGroup() {
 		AddSequential(new AutoRotate(-90,.5));
 		AddSequential(new AutoDrive(2));
 		AddSequential(new IntakeOpenCmd(true));
-
-		//puts it back to floor, ready for battle
-		AddSequential(new AutoDrive(-2));
-		AddParallel(new ElevatorFloor());
-		AddParallel(new IntakeOpenCmd(false));
 	}
 
-	//3-left
-	else if (position == 3 && gameData[0] == 'L' && !SmartDashboard::GetBoolean("DB/Button 3", false)) {
+	//3-left -- SWITCH OVERRIDE, SHOULD PROBABLY DO SCALE INSTEAD UNLESS SCALE IS ALSO BAD
+	else if (position == 3 && gameData[0] == 'L' && true) { //true being check if this wants to be used as override
 		AddSequential(new AutoDrive(20));
 		//AddParallel(new ElevatorSwitch());
 		AddSequential(new AutoRotate(90,.5));
@@ -132,43 +74,27 @@ AutoCmdGrp::AutoCmdGrp(int position): CommandGroup() {
 		AddSequential(new AutoRotate(90,.5));
 		AddSequential(new AutoDrive(2));
 		AddSequential(new IntakeOpenCmd(true));
-
-		//puts it back to floor, ready for battle
-		AddSequential(new AutoDrive(-2));
-		AddParallel(new ElevatorFloor());
-		AddParallel(new IntakeOpenCmd(false));
 	}
-
-	//SCALE
 
 	//1-leftSCALE
-	else if (position == 1 && gameData[1] == 'L' && SmartDashboard::GetBoolean("DB/Button 3", false)) {
-		AddSequential(new AutoDrive(27)); //CHECK THIS VALUE- NOT SURE IF GOOD
+	else if (position == 1 && gameData[1] == 'L' && true) { //true being check override
+		AddSequential(new AutoDrive(27));
 		//AddParallel(new ElevatorScale());
 		AddSequential(new AutoRotate(-90,.5));
-		//AddSequential(new AutoDrive(2)); DO WE WANT TO DO THIS???? STRAFING
+		AddSequential(new AutoDrive(2));
 		AddSequential(new IntakeOpenCmd(true));
 
-		//puts it back to floor, ready for battle
-		AddSequential(new AutoDrive(-2));
-		AddParallel(new ElevatorFloor());
-		AddParallel(new IntakeOpenCmd(false));
 	}
 
 	//3-rightSCALE
-	else if (position == 3 && gameData[1] == 'R' && SmartDashboard::GetBoolean("DB/Button 3", false)) {
-		AddSequential(new AutoDrive(27)); //DOUBLE CHECK VALUE
+	else if (position == 3 && gameData[1] == 'R' && true) { //true being check if want this
+		AddSequential(new AutoDrive(27));
 		//AddParallel(new ElevatorScale());
 		AddSequential(new AutoRotate(90,.5));
-		//AddSequential(new AutoDrive(2)); STRAFING???
+		AddSequential(new AutoDrive(2));
 		AddSequential(new IntakeOpenCmd(true));
 
-		//puts it back to floor, ready for battle
-		AddSequential(new AutoDrive(-2));
-		AddParallel(new ElevatorFloor());
-		AddParallel(new IntakeOpenCmd(false));
 	}
-
 
     // To run multiple commands at the same time,
     // use AddParallel()
