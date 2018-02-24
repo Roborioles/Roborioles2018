@@ -26,10 +26,10 @@ AutoDrive::AutoDrive(double distance): frc::Command() {
 
 // Called just before this Command runs the first time
 void AutoDrive::Initialize() {
-	Robot::driveBase->ResetAngle();
 	Robot::driveBase->EncoderReset();
+	Robot::driveBase->EnablePID();
 	Robot::driveBase->AutoDrive(m_distance);
-	SetTimeout(15);
+	SetTimeout(m_distance / 2);
 
 }
 

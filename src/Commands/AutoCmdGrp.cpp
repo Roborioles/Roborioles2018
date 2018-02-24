@@ -34,19 +34,19 @@ AutoCmdGrp::AutoCmdGrp(int position): CommandGroup() {
 
 	//1-left
 	if (position == 1 && gameData[0] == 'L' && true) { //check to see if this wants to be overriden
-		AddSequential(new AutoDrive(13.6));
+		AddSequential(new AutoDrive(13));
 		//AddParallel(new ElevatorSwitch());
 		AddSequential(new AutoRotate(-90,.5));
-		AddSequential(new AutoDrive(2));
+		AddSequential(new AutoDrive(3.5));
 		AddSequential(new IntakeOpenCmd(true));
 	}
 
 	//3-right
 	else if (position == 3 && gameData[0] == 'R' && true) { //check to see if this wants to be overriden
-		AddSequential(new AutoDrive(13.6));
+		AddSequential(new AutoDrive(13));
 		//AddParallel(new ElevatorSwitch());
 		AddSequential(new AutoRotate(90,.5));
-		AddSequential(new AutoDrive(2));
+		AddSequential(new AutoDrive(1));  // distance is less the left, cause of the drift to the left
 		AddSequential(new IntakeOpenCmd(true));
 	}
 

@@ -62,8 +62,11 @@ DriveBase::DriveBase() : frc::Subsystem("DriveBase") {
 			/* set the peak and nominal outputs, 12V means full */
 			leftMotor1->ConfigNominalOutputForward(0, kTimeoutMs);
 			leftMotor1->ConfigNominalOutputReverse(0, kTimeoutMs);
-			leftMotor1->ConfigPeakOutputForward(0.5, kTimeoutMs);
-			leftMotor1->ConfigPeakOutputReverse(-0.5, kTimeoutMs);
+			leftMotor1->ConfigPeakOutputForward(0.25, kTimeoutMs);
+			leftMotor1->ConfigPeakOutputReverse(-0.25, kTimeoutMs);
+
+			/* Set ramp rate */
+			//leftMotor1->ConfigClosedloopRamp(0.75,kTimeoutMs);
 
 			/* set closed loop gains in slot0 */
 			leftMotor1->Config_kF(kPIDLoopIdx, 0.0, kTimeoutMs);
@@ -74,8 +77,8 @@ DriveBase::DriveBase() : frc::Subsystem("DriveBase") {
 			/* set the peak and nominal outputs, 12V means full */
 			rightMotor1->ConfigNominalOutputForward(0, kTimeoutMs);
 			rightMotor1->ConfigNominalOutputReverse(0, kTimeoutMs);
-			rightMotor1->ConfigPeakOutputForward(0.5, kTimeoutMs);
-			rightMotor1->ConfigPeakOutputReverse(-0.5, kTimeoutMs);
+			rightMotor1->ConfigPeakOutputForward(0.25, kTimeoutMs);
+			rightMotor1->ConfigPeakOutputReverse(-0.25, kTimeoutMs);
 
 			/* set closed loop gains in slot0 */
 			rightMotor1->Config_kF(kPIDLoopIdx, 0.0, kTimeoutMs);
@@ -83,6 +86,8 @@ DriveBase::DriveBase() : frc::Subsystem("DriveBase") {
 			rightMotor1->Config_kI(kPIDLoopIdx, 0.0, kTimeoutMs);
 			rightMotor1->Config_kD(kPIDLoopIdx, 0.0, kTimeoutMs);
 
+			/* Set ramp rate */
+			//rightMotor1->ConfigClosedloopRamp(0.75,kTimeoutMs);
 
 
 }
@@ -208,6 +213,7 @@ void DriveBase::EncoderReset(){
 void DriveBase::AutoDrive(double distance){
 		distance = distance*12*.01577287;
 		double targetPositionRotations = distance * 10.0 * 4096; /* 50 (NOT) Rotations in either direction */
+
 		leftMotor1->Set(ControlMode::Position, targetPositionRotations); /* 50 rotations in either direction */
 		rightMotor1->Set(ControlMode::Position, targetPositionRotations); /* 50 rotations in either direction */
 }
@@ -279,6 +285,13 @@ void DriveBase::PrintValues(){
 
 }
 
+void DriveBase::EnablePID() {
+	leftMotor1->ConfigPeakOutputForward(0.35, kTimeoutMs);
+	leftMotor1->ConfigPeakOutputReverse(-0.35, kTimeoutMs);
+	rightMotor1->ConfigPeakOutputForward(0.35, kTimeoutMs);
+	rightMotor1->ConfigPeakOutputReverse(-0.35, kTimeoutMs);
+}
+
 void DriveBase::DisablePID() {
 	//leftMotor1->Set(ControlMode::Position,0);
 	leftMotor1->Set(ControlMode::PercentOutput,0);
@@ -287,9 +300,8 @@ void DriveBase::DisablePID() {
 
 	leftMotor1->ConfigPeakOutputForward(1, kTimeoutMs);
 	leftMotor1->ConfigPeakOutputReverse(-1, kTimeoutMs);
+	leftMotor1->ConfigClosedloopRamp(0,kTimeoutMs);
 	rightMotor1->ConfigPeakOutputForward(1, kTimeoutMs);
 	rightMotor1->ConfigPeakOutputReverse(-1, kTimeoutMs);
-
-
-
+	rightMotor1->ConfigClosedloopRamp(0,kTimeoutMs);
 }

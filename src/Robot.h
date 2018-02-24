@@ -47,5 +47,8 @@ public:
 	void AutonomousPeriodic() override;
 	void TeleopInit() override;
 	void TeleopPeriodic() override;
+
+	static bool teleop;
+	static bool intrpt;
 };
 #endif

@@ -51,6 +51,7 @@ public:
 	void AutoDrive(double distance);
 	void PrintValues();
 	void DisablePID();
+	void EnablePID();
 	void RotateToAngle(double angle, double speed);
 	bool CheckAngle(double target);
 	void ResetAngle();
