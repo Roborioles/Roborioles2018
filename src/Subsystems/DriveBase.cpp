@@ -70,7 +70,7 @@ DriveBase::DriveBase() : frc::Subsystem("DriveBase") {
 
 			/* set closed loop gains in slot0 */
 			leftMotor1->Config_kF(kPIDLoopIdx, 0.0, kTimeoutMs);
-			leftMotor1->Config_kP(kPIDLoopIdx, 0.1, kTimeoutMs);
+			leftMotor1->Config_kP(kPIDLoopIdx, 0.14, kTimeoutMs);
 			leftMotor1->Config_kI(kPIDLoopIdx, 0.0, kTimeoutMs);
 			leftMotor1->Config_kD(kPIDLoopIdx, 0.0, kTimeoutMs);
 
@@ -82,7 +82,7 @@ DriveBase::DriveBase() : frc::Subsystem("DriveBase") {
 
 			/* set closed loop gains in slot0 */
 			rightMotor1->Config_kF(kPIDLoopIdx, 0.0, kTimeoutMs);
-			rightMotor1->Config_kP(kPIDLoopIdx, 0.1, kTimeoutMs);
+			rightMotor1->Config_kP(kPIDLoopIdx, 0.14, kTimeoutMs);
 			rightMotor1->Config_kI(kPIDLoopIdx, 0.0, kTimeoutMs);
 			rightMotor1->Config_kD(kPIDLoopIdx, 0.0, kTimeoutMs);
 
@@ -230,27 +230,27 @@ bool DriveBase::isOnTarget(double distance) {
 void DriveBase::RotateToAngle(double angle, double speed) {
 	if(angle<0) {
 		leftMotor1->Set(ControlMode::PercentOutput,  speed);
-		leftMotor2->Set(ControlMode::PercentOutput,  speed);
+		//leftMotor2->Set(ControlMode::PercentOutput,  speed);
 		rightMotor1->Set(ControlMode::PercentOutput, -speed);
-		rightMotor2->Set(ControlMode::PercentOutput, -speed);
+		//rightMotor2->Set(ControlMode::PercentOutput, -speed);
 	} else {
 		leftMotor1->Set(ControlMode::PercentOutput,  -speed);
-		leftMotor2->Set(ControlMode::PercentOutput,  -speed);
+		//leftMotor2->Set(ControlMode::PercentOutput,  -speed);
 		rightMotor1->Set(ControlMode::PercentOutput, speed);
-		rightMotor2->Set(ControlMode::PercentOutput, speed);
+		//rightMotor2->Set(ControlMode::PercentOutput, speed);
 	}
 }
 
 void DriveBase::StopMotors() {
 	leftMotor1->Set(0);
-	leftMotor2->Set(0);
+	//leftMotor2->Set(0);
 	rightMotor1->Set(0);
-	rightMotor2->Set(0);
+	//rightMotor2->Set(0);
 
 }
 
 bool DriveBase::CheckAngle(double target) {
-	if(target - pigeonIMU->GetFusedHeading() >= -10 && target - pigeonIMU->GetFusedHeading() <= 10) {
+	if(target - pigeonIMU->GetFusedHeading() >= -2 && target - pigeonIMU->GetFusedHeading() <= 2) {
 		return true;
 	} else {
 		return false;
@@ -286,10 +286,12 @@ void DriveBase::PrintValues(){
 }
 
 void DriveBase::EnablePID() {
-	leftMotor1->ConfigPeakOutputForward(0.35, kTimeoutMs);
-	leftMotor1->ConfigPeakOutputReverse(-0.35, kTimeoutMs);
+	leftMotor1->ConfigPeakOutputForward(0.42, kTimeoutMs);
+	leftMotor1->ConfigPeakOutputReverse(-0.42, kTimeoutMs);
 	rightMotor1->ConfigPeakOutputForward(0.35, kTimeoutMs);
 	rightMotor1->ConfigPeakOutputReverse(-0.35, kTimeoutMs);
+	rightMotor1->ConfigClosedloopRamp(0.5,kTimeoutMs);
+	leftMotor1->ConfigClosedloopRamp(0.5,kTimeoutMs);
 }
 
 void DriveBase::DisablePID() {

@@ -27,7 +27,7 @@ AutonomousCommand::AutonomousCommand(): frc::Command() {
 void AutonomousCommand::Initialize() {
 	Robot::driveBase->ResetAngle();
 	Robot::driveBase->EncoderReset();
-	autoCmd.reset(new AutoCmdGrp(3));
+	autoCmd.reset(new AutoCmdGrp(1));
 	autoCmd->Start();
 }
 

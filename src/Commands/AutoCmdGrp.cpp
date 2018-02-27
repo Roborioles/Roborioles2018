@@ -34,11 +34,11 @@ AutoCmdGrp::AutoCmdGrp(int position): CommandGroup() {
 
 	//1-left
 	if (position == 1 && gameData[0] == 'L' && true) { //check to see if this wants to be overriden
+		//AddSequential(new ElevatorSwitch());
 		AddSequential(new AutoDrive(13));
-		//AddParallel(new ElevatorSwitch());
-		AddSequential(new AutoRotate(-90,.5));
-		AddSequential(new AutoDrive(3.5));
-		AddSequential(new IntakeOpenCmd(true));
+		AddSequential(new AutoRotate(-80,.5));
+		//AddSequential(new AutoDrive(3.5));
+		//AddSequential(new IntakeOpenCmd(true));
 	}
 
 	//3-right

@@ -69,6 +69,7 @@ void Robot::DisabledPeriodic() {
 void Robot::AutonomousInit() {
 	Robot::intakeSub->openIntake(false);
 	Robot::driveBase->EncoderReset();
+	Robot::driveBase->ResetAngle();
 
 	//autonomousCommand = chooser.GetSelected();
 	autonomousCommand = new AutonomousCommand();
