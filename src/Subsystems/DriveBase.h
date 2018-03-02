@@ -57,6 +57,7 @@ public:
 	void ResetAngle();
 	void StopMotors();
 	bool isOnTarget(double distance);
+	void VaryPID();
 private:
 
 };

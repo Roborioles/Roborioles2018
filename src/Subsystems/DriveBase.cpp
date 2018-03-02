@@ -70,9 +70,9 @@ DriveBase::DriveBase() : frc::Subsystem("DriveBase") {
 
 			/* set closed loop gains in slot0 */
 			leftMotor1->Config_kF(kPIDLoopIdx, 0.0, kTimeoutMs);
-			leftMotor1->Config_kP(kPIDLoopIdx, 0.14, kTimeoutMs);
+			leftMotor1->Config_kP(kPIDLoopIdx, 0.25, kTimeoutMs);
 			leftMotor1->Config_kI(kPIDLoopIdx, 0.0, kTimeoutMs);
-			leftMotor1->Config_kD(kPIDLoopIdx, 0.0, kTimeoutMs);
+			leftMotor1->Config_kD(kPIDLoopIdx, 75.0, kTimeoutMs);
 
 			/* set the peak and nominal outputs, 12V means full */
 			rightMotor1->ConfigNominalOutputForward(0, kTimeoutMs);
@@ -82,9 +82,9 @@ DriveBase::DriveBase() : frc::Subsystem("DriveBase") {
 
 			/* set closed loop gains in slot0 */
 			rightMotor1->Config_kF(kPIDLoopIdx, 0.0, kTimeoutMs);
-			rightMotor1->Config_kP(kPIDLoopIdx, 0.14, kTimeoutMs);
+			rightMotor1->Config_kP(kPIDLoopIdx, 0.25, kTimeoutMs);
 			rightMotor1->Config_kI(kPIDLoopIdx, 0.0, kTimeoutMs);
-			rightMotor1->Config_kD(kPIDLoopIdx, 0.0, kTimeoutMs);
+			rightMotor1->Config_kD(kPIDLoopIdx, 75.0, kTimeoutMs);
 
 			/* Set ramp rate */
 			//rightMotor1->ConfigClosedloopRamp(0.75,kTimeoutMs);
@@ -281,8 +281,6 @@ void DriveBase::PrintValues(){
 	SmartDashboard::PutNumber("RightPosition", rightMotor1->GetSelectedSensorPosition(kPIDLoopIdx));
 	SmartDashboard::PutNumber("RightError", rightMotor1->GetClosedLoopError(kPIDLoopIdx));
 	SmartDashboard::PutNumber("Gyro", pigeonIMU->GetFusedHeading());
-
-
 }
 
 void DriveBase::EnablePID() {
@@ -306,4 +304,16 @@ void DriveBase::DisablePID() {
 	rightMotor1->ConfigPeakOutputForward(1, kTimeoutMs);
 	rightMotor1->ConfigPeakOutputReverse(-1, kTimeoutMs);
 	rightMotor1->ConfigClosedloopRamp(0,kTimeoutMs);
+}
+
+void DriveBase::VaryPID() {
+	double angle;
+
+	angle = pigeonIMU->GetFusedHeading());
+
+	if (angle<0) {
+		printf("Negative Angle, turn right\n");
+	} else {
+		printf("Positive Angle, turn left\n");
+	}
 }

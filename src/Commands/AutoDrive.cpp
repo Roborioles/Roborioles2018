@@ -38,6 +38,7 @@ void AutoDrive::Execute() {
 	Robot::driveBase->PrintValues();
 	if (Robot::driveBase->isOnTarget(m_distance*39308.0017))
 		counter++;
+	Robot::driveBase->VaryPID();
 }
 
 // Make this return true when this Command no longer needs to run execute()

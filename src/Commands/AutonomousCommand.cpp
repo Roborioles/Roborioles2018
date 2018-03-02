@@ -27,7 +27,22 @@ AutonomousCommand::AutonomousCommand(): frc::Command() {
 void AutonomousCommand::Initialize() {
 	Robot::driveBase->ResetAngle();
 	Robot::driveBase->EncoderReset();
-	autoCmd.reset(new AutoCmdGrp(1));
+	if (SmartDashboard::GetBoolean("DB/Button 0", false) &&
+			!SmartDashboard::GetBoolean("DB/Button 1", false) &&
+			!SmartDashboard::GetBoolean("DB/Button 2", false) &&
+			!SmartDashboard::GetBoolean("DB/Button 3", false)) {
+		printf("Running Left - No Override\n");
+		autoCmd.reset(new AutoCmdGrp(1,0));
+	} else if (SmartDashboard::GetBoolean("DB/Button 1", false) &&
+			!SmartDashboard::GetBoolean("DB/Button 0", false) &&
+			!SmartDashboard::GetBoolean("DB/Button 2", false) &&
+			!SmartDashboard::GetBoolean("DB/Button 3", false)) {
+		printf("Running Right - No Override\n");
+		autoCmd.reset(new AutoCmdGrp(2,0));
+	} else {
+		printf("No position - No Override - driving forward 10 feet\n");
+		autoCmd.reset(new AutoCmdGrp(0,0));
+	}
 	autoCmd->Start();
 }
 

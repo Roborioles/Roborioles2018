@@ -59,11 +59,34 @@ void Robot::RobotInit() {
  */
 void Robot::DisabledInit(){
 	Robot::driveBase->EncoderReset();
-
+	SmartDashboard::PutBoolean("DB/Button 0",false);
+	SmartDashboard::PutBoolean("DB/Button 1",false);
+	SmartDashboard::PutBoolean("DB/Button 2",false);
+	SmartDashboard::PutBoolean("DB/Button 3",false);
 }
 
 void Robot::DisabledPeriodic() {
 	frc::Scheduler::GetInstance()->Run();
+	// Location
+	if (SmartDashboard::GetBoolean("DB/Button 0", false)) {
+		SmartDashboard::PutBoolean("DB/Button 1",false);
+		SmartDashboard::PutString("DB/String 0","Left Position");
+	} else if(SmartDashboard::GetBoolean("DB/Button 1", false)) {
+		SmartDashboard::PutBoolean("DB/Button 0",false);
+		SmartDashboard::PutString("DB/String 0","Right Position");
+	} else {
+		SmartDashboard::PutString("DB/String 0","Middle Position");
+	}
+	// Action taken
+	if (SmartDashboard::GetBoolean("DB/Button 2", false)) {
+		SmartDashboard::PutString("DB/String 5","Switch Override");
+		SmartDashboard::PutBoolean("DB/Button 3",false);
+	} else if (SmartDashboard::GetBoolean("DB/Button 3", false)){
+		SmartDashboard::PutString("DB/String 5","Scale Override");
+		SmartDashboard::PutBoolean("DB/Button 2",false);
+	} else {
+		SmartDashboard::PutString("DB/String 5","");
+	}
 }
 
 void Robot::AutonomousInit() {
