@@ -34,7 +34,10 @@ AutoCmdGrp::AutoCmdGrp(int position, int override): CommandGroup() {
 
 	if (position==0 && override==0) {
 		printf("Driving forward 10 feet\n");
-		AddSequential(new AutoDrive(26));
+		AddSequential(new ElevatorSwitch());
+		AddSequential(new AutoDrive(10));
+		AddSequential(new AutoRotate(-80, .4));
+		AddSequential(new IntakeOpenCmd(true));
 	}
 
 	/*

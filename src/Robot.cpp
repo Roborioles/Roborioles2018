@@ -93,18 +93,20 @@ void Robot::AutonomousInit() {
 	Robot::intakeSub->openIntake(false);
 	Robot::driveBase->EncoderReset();
 	Robot::driveBase->ResetAngle();
+	Robot::elevate->Extend();
+	Robot::elevate->ElevateInit();
+	Robot::elevator->Init();
 
 	//autonomousCommand = chooser.GetSelected();
 	autonomousCommand = new AutonomousCommand();
 	if (autonomousCommand != nullptr)
 		autonomousCommand->Start();
-	Robot::elevate->Extend();
-	Robot::elevate->ElevateInit();
-	Robot::elevator->Init();
+
 }
 
 void Robot::AutonomousPeriodic() {
 	frc::Scheduler::GetInstance()->Run();
+	Robot::driveBase->PrintValues();
 }
 
 void Robot::TeleopInit() {
