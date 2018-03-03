@@ -33,7 +33,6 @@ void AutoRotate::Initialize() {
 // Called repeatedly when this Command is scheduled to run
 void AutoRotate::Execute() {
 	Robot::driveBase->RotateToAngle(m_angle,m_speed);
-	Robot::driveBase->PrintValues();
 }
 
 // Make this return true when this Command no longer needs to run execute()

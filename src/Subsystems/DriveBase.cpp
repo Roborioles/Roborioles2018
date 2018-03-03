@@ -91,6 +91,7 @@ DriveBase::DriveBase() : frc::Subsystem("DriveBase") {
 			//rightMotor1->ConfigClosedloopRamp(0.75,kTimeoutMs);
 			leftSpeed = 0.35;
 			rightSpeed = 0.35;
+			pcounter = 0;
 }
 
 void DriveBase::InitDefaultCommand() {
@@ -284,16 +285,13 @@ void DriveBase::PrintValues(){
 		righterror = rightMotor1->GetClosedLoopError(kPIDLoopIdx);
 	}
 
-	printf("LeftPosition %i [%i], Speed %f, RightPosition %i [%i], Speed %f, angle %f\n",
-			leftMotor1->GetSelectedSensorPosition(kPIDLoopIdx),lefterror,leftSpeed,
-			rightMotor1->GetSelectedSensorPosition(kPIDLoopIdx),righterror,rightSpeed,
-			pigeonIMU->GetFusedHeading());
-
-	SmartDashboard::PutNumber("LeftPosition", leftMotor1->GetSelectedSensorPosition(kPIDLoopIdx));
-	SmartDashboard::PutNumber("LeftError", leftMotor1->GetClosedLoopError(kPIDLoopIdx));
-	SmartDashboard::PutNumber("RightPosition", rightMotor1->GetSelectedSensorPosition(kPIDLoopIdx));
-	SmartDashboard::PutNumber("RightError", rightMotor1->GetClosedLoopError(kPIDLoopIdx));
-	SmartDashboard::PutNumber("Gyro", pigeonIMU->GetFusedHeading());
+	if (pcounter%50==0) {
+		printf("LeftPosition %i [%i], Speed %f, RightPosition %i [%i], Speed %f, angle %f\n",
+				leftMotor1->GetSelectedSensorPosition(kPIDLoopIdx),lefterror,leftSpeed,
+				rightMotor1->GetSelectedSensorPosition(kPIDLoopIdx),righterror,rightSpeed,
+				pigeonIMU->GetFusedHeading());
+	}
+	pcounter++;
 }
 
 void DriveBase::EnablePID() {

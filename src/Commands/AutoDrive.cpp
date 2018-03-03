@@ -30,14 +30,13 @@ void AutoDrive::Initialize() {
 	Robot::driveBase->EncoderReset();
 	Robot::driveBase->EnablePID();
 	Robot::driveBase->AutoDrive(m_distance);
-	//SetTimeout(m_distance / 2);
+	//SetTimeout(m_distance / 1.25);
 	SetTimeout(10);
 }
 
 // Called repeatedly when this Command is scheduled to run
 void AutoDrive::Execute() {
 	Robot::elevator->ElevatorExecute();
-	Robot::driveBase->PrintValues();
 	Robot::driveBase->CheckPosition();
 	if (Robot::driveBase->isOnTarget(m_distance*39308.0017))
 		counter++;
@@ -51,7 +50,7 @@ void AutoDrive::Execute() {
 bool AutoDrive::IsFinished() {
 	//5.11*10*4096
 	//2.5*10*4096
-	if (IsTimedOut()  || (counter >= 25))
+	if (IsTimedOut()  || (counter >= 50))
 		return true;
 	else
 		return false;
