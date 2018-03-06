@@ -28,6 +28,7 @@ AutoRotate::AutoRotate(double angle, double speed): frc::Command() {
 void AutoRotate::Initialize() {
 	SetTimeout(5);
 	Robot::driveBase->DisablePID();
+	printf("Auto Rotate Begin");
 }
 
 // Called repeatedly when this Command is scheduled to run
@@ -52,5 +53,5 @@ void AutoRotate::End() {
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void AutoRotate::Interrupted() {
-
+	Robot::driveBase->StopMotors();
 }

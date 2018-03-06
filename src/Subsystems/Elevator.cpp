@@ -62,7 +62,7 @@ void Elevator::Init(){
 	//elevatorMotor->SetSelectedSensorPosition(absolutePosition, kPIDLoopIdx, kTimeoutMs);
 
 	// elevatorMotor->SetSelectedSensorPosition(0, kPIDLoopIdx, kTimeoutMs);
-	targetPos = 0;
+	//targetPos = 0;
 	/* choose the sensor and sensor direction */
 	elevatorMotor->ConfigSelectedFeedbackSensor(FeedbackDevice::CTRE_MagEncoder_Relative, kPIDLoopIdx, kTimeoutMs);
 	elevatorMotor->SetSensorPhase(true);

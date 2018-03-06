@@ -126,7 +126,7 @@ void Robot::TeleopInit() {
 
 	Robot::elevate->Extend();
 	Robot::elevate->ElevateInit();
-	Robot::elevator->Init();
+	Robot::intakeSub->openIntake(false);
 }
 
 void Robot::TeleopPeriodic() {

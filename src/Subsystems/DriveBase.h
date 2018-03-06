@@ -62,6 +62,7 @@ public:
 	bool isOnTarget(double distance);
 	void VaryPID(int t);
 	void CheckPosition();
+	void ResetHelpers();
 private:
 	double leftPosition;
 	double rightPosition;

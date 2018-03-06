@@ -27,18 +27,20 @@ AutoDrive::AutoDrive(double distance): frc::Command() {
 
 // Called just before this Command runs the first time
 void AutoDrive::Initialize() {
+	Robot::driveBase->ResetAngle();
 	Robot::driveBase->EncoderReset();
 	Robot::driveBase->EnablePID();
 	Robot::driveBase->AutoDrive(m_distance);
 	//SetTimeout(m_distance / 1.25);
 	SetTimeout(10);
+	Robot::driveBase->ResetHelpers();
 }
 
 // Called repeatedly when this Command is scheduled to run
 void AutoDrive::Execute() {
 	Robot::elevator->ElevatorExecute();
 	Robot::driveBase->CheckPosition();
-	if (Robot::driveBase->isOnTarget(m_distance*39308.0017))
+	if (Robot::driveBase->isOnTarget(m_distance))
 		counter++;
 	else
 		counter = 0;
@@ -58,11 +60,12 @@ bool AutoDrive::IsFinished() {
 
 // Called once after isFinished returns true
 void AutoDrive::End() {
+	printf("AUTO DRIVE END");
 
 }
 
 // Called when another command which requires one or more of the same
 // subsystems is scheduled to run
 void AutoDrive::Interrupted() {
-
+	Robot::driveBase->DisablePID();
 }
