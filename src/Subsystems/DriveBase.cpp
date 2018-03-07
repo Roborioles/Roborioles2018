@@ -287,7 +287,7 @@ void DriveBase::PrintValues(){
 		righterror = rightMotor1->GetClosedLoopError(kPIDLoopIdx);
 	}
 
-	if (pcounter%1==0) {
+	if (pcounter%2==0) {
 		printf("LeftPosition %i [%i], Speed %f, RightPosition %i [%i], Speed %f, angle %f\n",
 				leftMotor1->GetSelectedSensorPosition(kPIDLoopIdx),lefterror,leftSpeed,
 				rightMotor1->GetSelectedSensorPosition(kPIDLoopIdx),righterror,rightSpeed,
@@ -330,14 +330,9 @@ void DriveBase::VaryPID(int t) {
 		if (angle < -0.5) {
 			printf("Negative Angle, turn left\n");
 			rightSpeed += 0.01;
-			leftSpeed -= 0.01;
 		} else if (angle > 0.5){
 			printf("Positive Angle, turn right\n");
-			if (leftSpeed < .45)
-				leftSpeed += 0.01;
-			else
-				leftSpeed = .1;
-			rightSpeed -= 0.01;
+			leftSpeed += .01;
 		} else {
 			printf("Nothing to vary here, angle is within range (-1 to 1)\n");
 		}
