@@ -327,30 +327,33 @@ void Elevator::PartyLight(bool isMoving,double encoderValue){
 		}
 	}
 	*/
-
-
-	if(isMoving){
-		elevatorLEDs->Set(IML);
-	}
-	else if(encoderValue <= Floor){
-		elevatorLEDs->Set(FL);
-	}
-	else if(encoderValue <= switchSpot){
-		elevatorLEDs->Set(EL);
-	}
-	else if(encoderValue <= lowScaleSpot){
-		elevatorLEDs->Set(SSL);
-	}
-	else if(encoderValue <= midScaleSpot){
-		elevatorLEDs->Set(LSL);
-	}
-	else if(encoderValue <= highScaleSpot){
-		elevatorLEDs->Set(MSL);
+	double ultraValue = ultraS->GetRangeInches();
+	if(ultraValue < 2 && encoderValue <= Floor){
+		elevatorLEDs->Set(-.23);
 	}
 	else{
-		elevatorLEDs->Set(HSL);
+		if(isMoving){
+			elevatorLEDs->Set(IML);
+		}
+		else if(encoderValue <= Floor){
+			elevatorLEDs->Set(FL);
+		}
+		else if(encoderValue <= switchSpot){
+			elevatorLEDs->Set(EL);
+		}
+		else if(encoderValue <= lowScaleSpot){
+			elevatorLEDs->Set(SSL);
+		}
+		else if(encoderValue <= midScaleSpot){
+			elevatorLEDs->Set(LSL);
+		}
+		else if(encoderValue <= highScaleSpot){
+			elevatorLEDs->Set(MSL);
+		}
+		else{
+			elevatorLEDs->Set(HSL);
+		}
 	}
-
 }
 
 
