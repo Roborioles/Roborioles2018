@@ -60,8 +60,8 @@ void Elevator::Init(){
 	/* use the low level API to set the quad encoder signal */
 	//elevatorMotor->SetSelectedSensorPosition(absolutePosition, kPIDLoopIdx, kTimeoutMs);
 
-	// elevatorMotor->SetSelectedSensorPosition(0, kPIDLoopIdx, kTimeoutMs);
-	//targetPos = 0;
+	elevatorMotor->SetSelectedSensorPosition(0, kPIDLoopIdx, kTimeoutMs);
+	targetPos = 0;
 	/* choose the sensor and sensor direction */
 	elevatorMotor->ConfigSelectedFeedbackSensor(FeedbackDevice::CTRE_MagEncoder_Relative, kPIDLoopIdx, kTimeoutMs);
 	elevatorMotor->SetSensorPhase(true);
