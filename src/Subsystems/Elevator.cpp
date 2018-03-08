@@ -174,7 +174,7 @@ void Elevator::ElevatorExecute(){
 }
 
 void Elevator::ElevatorExecuteTarget(){
-	SetPIDs();
+	//SetPIDs();
 	//process move
 
 	double encoderValue = elevatorMotor->GetSelectedSensorPosition(0)/4096.0;
@@ -244,7 +244,7 @@ void Elevator::ElevatorGoToSwitch(){
 }
 void Elevator::ElevatorGoToScale(){
 	//ElevatorGoToRevolutions(35.657);
-	ElevatorGoToRevolutions(37.657);
+	ElevatorGoToRevolutions(35.2);
 	//Height in revolutions for scale (tied to button X)
 }
 void Elevator::ElevatorGoToHighScale(){
@@ -255,16 +255,16 @@ void Elevator::ElevatorGoToHighScale(){
 void Elevator::PartyLight(bool isMoving,double encoderValue){
 	double Floor=1;
 	double switchSpot=12.5;
-	double lowScaleSpot=36;
-	double midScaleSpot=37;
+	double lowScaleSpot=34;
+	double midScaleSpot=35;
 	double highScaleSpot=38;
-	double IML=-.87;
-	double FL=.57;
-	double EL=.64;
-	double SSL=.68;
-	double LSL=.77;
-	double MSL=.86;
-	double HSL=.90;
+	double IML=-.87; /*confetti*/
+	double FL=.57; /*red*/
+	double EL=.64; /*yellow*/
+	double SSL=.72; /*green .70*/
+	double LSL=.77; /*blue*/
+	double MSL=.86; /*white*/
+	double HSL=.53; /*violet .90*/ //.91
 
 /*
 	if(isMoving){
@@ -332,7 +332,7 @@ void Elevator::PartyLight(bool isMoving,double encoderValue){
 	*/
 
 	double ultraValue = ultraS->GetRangeInches();
-	if (ultraValue < 9.5 && encoderValue <= Floor) {
+	if (ultraValue < 10.5 && encoderValue <= Floor) {
 		elevatorLEDs->Set(-.23);
 	} else {
 		if(isMoving){

@@ -329,13 +329,13 @@ Children:
           default: '0'
           name: Reverse Channel (Solenoid)
           validators: *id015
-          value: '1'
+          value: '5'
         Forward Channel (Solenoid): !!robotbuilder.data.properties.ChoicesProperty
           choices: *id016
           default: '0'
           name: Forward Channel (Solenoid)
           validators: *id017
-          value: '0'
+          value: '4'
       Base: Double Solenoid
       Name: DeployTop
     - Children: []
@@ -357,13 +357,13 @@ Children:
           default: '0'
           name: Reverse Channel (Solenoid)
           validators: *id015
-          value: '3'
+          value: '7'
         Forward Channel (Solenoid): !!robotbuilder.data.properties.ChoicesProperty
           choices: *id016
           default: '0'
           name: Forward Channel (Solenoid)
           validators: *id017
-          value: '2'
+          value: '6'
       Base: Double Solenoid
       Name: DeployBottom
     Properties:
