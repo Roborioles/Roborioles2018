@@ -54,15 +54,19 @@ void Elevator::Periodic() {
 // Put methods for controlling this subsystem
 // here. Call these from Commands.
 
-void Elevator::Init(){
+void Elevator::Init(bool teleopReset){
 	// * * * * * CHANGE MOTOR AND SOLENOID IDS * * * * * * * * * *
 	/* lets grab the 360 degree position of the MagEncoder's absolute position */
 	//int absolutePosition = elevatorMotor->GetSelectedSensorPosition(0) & 0xFFF; /* mask out the bottom12 bits, we don't care about the wrap arounds */
 	/* use the low level API to set the quad encoder signal */
 	//elevatorMotor->SetSelectedSensorPosition(absolutePosition, kPIDLoopIdx, kTimeoutMs);
 
+	double encoderValue = elevatorMotor->GetSelectedSensorPosition(0);
 	ultraS->SetAutomaticMode(true);
-	elevatorMotor->SetSelectedSensorPosition(0, kPIDLoopIdx, kTimeoutMs);
+	if (teleopReset)
+		elevatorMotor->SetSelectedSensorPosition(encoderValue, kPIDLoopIdx, kTimeoutMs);
+	else
+		elevatorMotor->SetSelectedSensorPosition(0, kPIDLoopIdx, kTimeoutMs);
 	targetPos = 0;
 	/* choose the sensor and sensor direction */
 	elevatorMotor->ConfigSelectedFeedbackSensor(FeedbackDevice::CTRE_MagEncoder_Relative, kPIDLoopIdx, kTimeoutMs);

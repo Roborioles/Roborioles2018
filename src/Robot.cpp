@@ -24,6 +24,7 @@ std::unique_ptr<OI> Robot::oi;
 
 bool Robot::teleop = false;
 bool Robot::intrpt = false;
+int Robot::teleopReset = 0;
 
 void Robot::RobotInit() {
 	RobotMap::init();
@@ -51,6 +52,7 @@ void Robot::RobotInit() {
 	frc::SmartDashboard::PutData("Auto Modes", &chooser);
 	CameraServer::GetInstance()->StartAutomaticCapture();
 	Robot::driveBase->ShiftingInfo();
+	teleopReset = 0;
 }
 
 /**
@@ -91,12 +93,13 @@ void Robot::DisabledPeriodic() {
 }
 
 void Robot::AutonomousInit() {
+	teleopReset++;
 	Robot::intakeSub->openIntake(false);
 	Robot::driveBase->EncoderReset();
 	Robot::driveBase->ResetAngle();
 	Robot::elevate->Extend();
 	Robot::elevate->ElevateInit();
-	Robot::elevator->Init();
+	Robot::elevator->Init(false);
 
 	//autonomousCommand = chooser.GetSelected();
 	autonomousCommand = new AutonomousCommand();
@@ -119,12 +122,13 @@ void Robot::TeleopInit() {
 		autonomousCommand->Cancel();
 	cmd.reset(new Drive());
 	cmd->Start();
+	if(teleopReset == 0)
+		Robot::elevator->Init(true);
 	Robot::teleop = true;
 	Robot::intrpt = true;
 	Robot::driveBase->DisablePID();
 	Robot::driveBase->EncoderReset();
 	Robot::driveBase->ResetAngle();
-	Robot::elevator->ultraS->SetAutomaticMode(true);
 
 	Robot::elevate->Extend();
 	Robot::elevate->ElevateInit();
