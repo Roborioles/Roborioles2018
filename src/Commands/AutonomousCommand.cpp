@@ -27,6 +27,7 @@ AutonomousCommand::AutonomousCommand(): frc::Command() {
 void AutonomousCommand::Initialize() {
 	Robot::driveBase->ResetAngle();
 	Robot::driveBase->EncoderReset();
+	Robot::driveBase->ResetHelpers();
 
 	int position=0;
 	if (SmartDashboard::GetBoolean("DB/Button 0", false) &&

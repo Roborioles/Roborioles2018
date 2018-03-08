@@ -38,6 +38,7 @@ void AutoDrive::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void AutoDrive::Execute() {
+	t++;
 	Robot::elevator->ElevatorExecute();
 	Robot::driveBase->CheckPosition();
 	if (Robot::driveBase->isOnTarget(m_distance))
@@ -45,14 +46,13 @@ void AutoDrive::Execute() {
 	else
 		counter = 0;
 	Robot::driveBase->VaryPID(t);
-	t++;
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool AutoDrive::IsFinished() {
 	//5.11*10*4096
 	//2.5*10*4096
-	if (IsTimedOut()  || (counter >= 50))
+	if (IsTimedOut()  || (counter >= 20))
 		return true;
 	else
 		return false;
@@ -61,7 +61,7 @@ bool AutoDrive::IsFinished() {
 // Called once after isFinished returns true
 void AutoDrive::End() {
 	printf("AUTO DRIVE END");
-
+	Robot::driveBase->DisablePID();
 }
 
 // Called when another command which requires one or more of the same

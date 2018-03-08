@@ -58,11 +58,12 @@ AutoCmdGrp::AutoCmdGrp(int position, int override): CommandGroup() {
 				printf("Driving forward 13 feet, to score on left switch\n");
 				AddSequential(new ElevatorSwitch());
 				AddSequential(new AutoDrive(13));
-				AddSequential(new AutoRotate(-80, .5));
+				AddSequential(new AutoRotate(-75, .7));
 				AddSequential(new AutoDrive(2));
 				AddSequential(new IntakeOpenCmd(true));
-				AddSequential(new WaitCmd(1));
+				AddSequential(new WaitCmd(2));
 				AddSequential(new AutoDrive(-1));
+				AddSequential(new IntakeOpenCmd(false));
 				AddSequential(new ElevatorFloor());
 				AddSequential(new AutoDrive(-1));
 			} else if (override == 2) {
@@ -70,27 +71,33 @@ AutoCmdGrp::AutoCmdGrp(int position, int override): CommandGroup() {
 				if (gameData[1] == 'L') {
 					printf("Driving forward 26 feet, to score on left scale\n");
 					AddSequential(new ElevatorScale());
-					AddSequential(new AutoDrive(22));
-					AddSequential(new AutoRotate(-50, .5));
+					AddSequential(new AutoDrive(23.5));
+					AddSequential(new AutoRotate(-40, .5));
 					AddSequential(new AutoDrive(2));
 					AddSequential(new IntakeOpenCmd(true));
 					AddSequential(new WaitCmd(2));
-					AddSequential(new AutoDrive(-1));
-					AddSequential(new ElevatorFloor());
 					AddSequential(new AutoDrive(-2));
+					//AddSequential(new ElevatorFloor());
+					AddSequential(new AutoDrive(-1));
 				} else {
 					// Scale is on the right, so good luck - left position,
 					printf("Drive down the alley and hope for the best trying right scale\n");
 					//down to alleyway
-					AddSequential(new AutoDrive(18));
+					AddSequential(new AutoDrive(18.5));
 					AddSequential(new AutoRotate(-85, .5));
 					//down the alleyway
-					AddSequential(new ElevatorScale());
+					//AddSequential(new ElevatorScale());
 					AddSequential(new AutoDrive(20));
-					/*AddSequential(new AutoRotate(120, .5));
+					AddSequential(new AutoRotate(80, .5));
 					//up on scale, closing in and releasing
-					AddSequential(new AutoDrive(2));*/
+					AddSequential(new AutoDrive(3));
+					AddSequential(new AutoRotate(30, .5));
+					AddSequential(new AutoDrive(2));
 					AddSequential(new IntakeOpenCmd(true));
+					AddSequential(new WaitCmd(2));
+					AddSequential(new AutoDrive(-2));
+					//AddSequential(new ElevatorFloor());
+					AddSequential(new AutoDrive(-1));
 				}
 			}
 		} else {
@@ -99,22 +106,22 @@ AutoCmdGrp::AutoCmdGrp(int position, int override): CommandGroup() {
 				printf("Drive down the alley and hope for the best trying right switch\n");
 				//down to alleyway
 				AddSequential(new AutoDrive(18.5));
-				AddSequential(new AutoRotate(-85, .5));
+				AddSequential(new AutoRotate(-80, .5));
 				//down the alleyway
 				AddSequential(new AutoDrive(20));
-				AddSequential(new AutoRotate(-120, .7));
+				AddSequential(new AutoRotate(-120, .5));
 				//back down other side
-				AddSequential(new ElevatorSwitch());
+				//AddSequential(new ElevatorSwitch());
 				AddSequential(new AutoDrive(4));
 				//up on switch, closing in and releasing
 				AddSequential(new IntakeOpenCmd(true));
 				AddSequential(new WaitCmd(2));
-				AddSequential(new AutoDrive(-2));
+				AddSequential(new AutoDrive(-4));
 			} else {
 				if (gameData[1] == 'L') {
 					// Scale is on the left, switch is on the right, scale is better
 					printf("Driving forward 26 feet, to score on left scale\n");
-					AddSequential(new ElevatorScale());
+					//AddSequential(new ElevatorScale());
 					AddSequential(new AutoDrive(22));
 					AddSequential(new AutoRotate(-50, .5));
 					AddSequential(new AutoDrive(1));
@@ -130,7 +137,7 @@ AutoCmdGrp::AutoCmdGrp(int position, int override): CommandGroup() {
 						AddSequential(new AutoDrive(20));
 						AddSequential(new AutoRotate(-120, .7));
 						//back down other side
-						AddSequential(new ElevatorSwitch());
+						//AddSequential(new ElevatorSwitch());
 						AddSequential(new AutoDrive(4));
 						//up on switch, closing in and releasing
 						AddSequential(new IntakeOpenCmd(true));
@@ -142,7 +149,7 @@ AutoCmdGrp::AutoCmdGrp(int position, int override): CommandGroup() {
 						AddSequential(new AutoDrive(18));
 						AddSequential(new AutoRotate(-80, .5));
 						//down the alleyway
-						AddSequential(new ElevatorScale());
+						//AddSequential(new ElevatorScale());
 						AddSequential(new AutoDrive(20));
 						AddSequential(new AutoRotate(120, .5));
 						//up on scale, closing in and releasing
@@ -158,7 +165,7 @@ AutoCmdGrp::AutoCmdGrp(int position, int override): CommandGroup() {
 			if (override < 2) {
 				// Go for switch
 				printf("Driving forward 13 feet, to score on right switch\n");
-				AddSequential(new ElevatorSwitch());
+				//AddSequential(new ElevatorSwitch());
 				AddSequential(new AutoDrive(13));
 				AddSequential(new AutoRotate(85, .5));
 				AddSequential(new AutoDrive(2));
@@ -170,7 +177,7 @@ AutoCmdGrp::AutoCmdGrp(int position, int override): CommandGroup() {
 					printf("Driving forward 26 feet, to score on right scale\n");
 					AddSequential(new AutoDrive(22));
 					AddSequential(new AutoRotate(50, .5));
-					AddSequential(new ElevatorScale());
+					//AddSequential(new ElevatorScale());
 					AddSequential(new AutoDrive(2.5));
 					AddSequential(new IntakeOpenCmd(true));
 				} else {
@@ -189,7 +196,7 @@ AutoCmdGrp::AutoCmdGrp(int position, int override): CommandGroup() {
 				if (gameData[1] == 'R') {
 					// Scale is on the right, switch is on the left, scale is better
 					printf("Driving forward 26 feet, to score on left scale\n");
-					AddSequential(new ElevatorScale());
+					//AddSequential(new ElevatorScale());
 					AddSequential(new AutoDrive(22));
 					AddSequential(new AutoRotate(50, .5));
 					AddSequential(new AutoDrive(2.5));
@@ -212,14 +219,14 @@ AutoCmdGrp::AutoCmdGrp(int position, int override): CommandGroup() {
 			AddSequential(new AutoRotate(80, .5));
 			AddSequential(new AutoDrive(5));
 			AddSequential(new AutoRotate(-80, .5));
-			AddSequential(new ElevatorSwitch());
+			//AddSequential(new ElevatorSwitch());
 			AddSequential(new AutoDrive(4.5));
 			AddSequential(new IntakeOpenCmd(true));
 			AddSequential(new WaitCmd(2));
 			AddSequential(new AutoDrive(-2));
 		} else if (gameData[0] == 'R') {
 			printf("Middle, going for left switch\n");
-			AddSequential(new ElevatorSwitch());
+			//AddSequential(new ElevatorSwitch());
 			AddSequential(new AutoDrive(8.5));
 			AddSequential(new IntakeOpenCmd(true));
 			AddSequential(new WaitCmd(2));
@@ -230,7 +237,7 @@ AutoCmdGrp::AutoCmdGrp(int position, int override): CommandGroup() {
 	/*
 	//1-left
 	if (position == 1 && gameData[0] == 'L' && true) { //check to see if this wants to be overriden
-		//AddSequential(new ElevatorSwitch());
+		////AddSequential(new ElevatorSwitch());
 		AddSequential(new AutoDrive(13));
 		AddSequential(new AutoRotate(-80,.5));
 		//AddSequential(new AutoDrive(3.5));

@@ -235,7 +235,7 @@ bool DriveBase::isOnTarget(double distance) {
 		return false; */
 	if (leftPosition - 100 <= leftMotor1->GetSelectedSensorPosition(kPIDLoopIdx) && leftPosition + 100 >= leftMotor1->GetSelectedSensorPosition(kPIDLoopIdx) &&
 			rightPosition - 100 <= rightMotor1->GetSelectedSensorPosition(kPIDLoopIdx) && rightPosition + 100 >= rightMotor1->GetSelectedSensorPosition(kPIDLoopIdx) &&
-			leftMotor1->GetSelectedSensorPosition(kPIDLoopIdx) > distance*.75*12*.01577287*10*4096) {
+			abs(leftMotor1->GetSelectedSensorPosition(kPIDLoopIdx)) > abs(distance*.75*12*.01577287*10*4096)) {
 		return true;
 	} else  {
 		return false;
@@ -327,6 +327,10 @@ void DriveBase::VaryPID(int t) {
 	angle = pigeonIMU->GetFusedHeading();
 
 	if (t%5 == 0) {
+		///*
+		if (leftSpeed > .42 || rightSpeed > .42)
+			ResetHelpers();
+		//*/
 		if (angle < -0.5) {
 			printf("Negative Angle, turn left\n");
 			rightSpeed += 0.01;
