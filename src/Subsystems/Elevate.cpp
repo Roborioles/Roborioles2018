@@ -49,7 +49,7 @@ void Elevate::Periodic() {
 // here. Call these from Commands.
 
 void Elevate::Raise(int position) {
-	if (deployTop->Get()== DoubleSolenoid::Value::kReverse){
+	if (deployTop->Get()== DoubleSolenoid::Value::kForward){
 		// left
 		if (position==1) {
 			printf("Raising left\n");
@@ -70,12 +70,17 @@ void Elevate::Raise(int position) {
 }
 
 void Elevate::Deploy() {
-	deployTop->Set(DoubleSolenoid::Value::kReverse);
+	deployTop->Set(DoubleSolenoid::Value::kForward);
 }
 
 void Elevate::Extend() {
-	deployTop->Set(DoubleSolenoid::Value::kForward);
-	deployBottom->Set(DoubleSolenoid::Value::kForward);
+	deployTop->Set(DoubleSolenoid::Value::kReverse);
+	deployBottom->Set(DoubleSolenoid::Value::kReverse);
+}
+
+void Elevate::Reset() {
+	deployTop->Set(DoubleSolenoid::Value::kReverse);
+	deployBottom->Set(DoubleSolenoid::Value::kReverse);
 }
 
 void Elevate::ElevateInit() {

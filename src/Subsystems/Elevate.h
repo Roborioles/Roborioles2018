@@ -42,6 +42,7 @@ public:
 	void Deploy();
 	void Extend();
 	void ElevateInit();
+	void Reset();
 
 };
 

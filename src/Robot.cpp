@@ -130,7 +130,6 @@ void Robot::TeleopInit() {
 	Robot::driveBase->EncoderReset();
 	Robot::driveBase->ResetAngle();
 
-	Robot::elevate->Extend();
 	Robot::elevate->ElevateInit();
 	Robot::intakeSub->openIntake(false);
 }

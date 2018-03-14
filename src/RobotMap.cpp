@@ -90,10 +90,10 @@ void RobotMap::init() {
     elevateLeftElevate.reset(new frc::DoubleSolenoid(0, 6, 2));
     lw->AddActuator("Elevate", "LeftElevate", elevateLeftElevate);
     
-    elevateDeployTop.reset(new frc::DoubleSolenoid(19, 4, 5));
+    elevateDeployTop.reset(new frc::DoubleSolenoid(19, 2, 3));
     lw->AddActuator("Elevate", "DeployTop", elevateDeployTop);
     
-    elevateDeployBottom.reset(new frc::DoubleSolenoid(19, 6, 7));
+    elevateDeployBottom.reset(new frc::DoubleSolenoid(19, 0, 1));
     lw->AddActuator("Elevate", "DeployBottom", elevateDeployBottom);
     
 

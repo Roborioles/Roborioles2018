@@ -60,9 +60,11 @@ public:
 	void ResetAngle();
 	void StopMotors();
 	bool isOnTarget(double distance);
-	void VaryPID(int t);
+	void VaryPID(int t, double target);
 	void CheckPosition();
 	void ResetHelpers();
+	void FindCubes();
+	double MeasureCubeGrabDistance();
 private:
 	double leftPosition;
 	double rightPosition;

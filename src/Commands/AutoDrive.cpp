@@ -27,12 +27,12 @@ AutoDrive::AutoDrive(double distance): frc::Command() {
 
 // Called just before this Command runs the first time
 void AutoDrive::Initialize() {
+	SetTimeout(abs(m_distance) / 1.25);
 	Robot::driveBase->ResetAngle();
 	Robot::driveBase->EncoderReset();
 	Robot::driveBase->EnablePID();
 	Robot::driveBase->AutoDrive(m_distance);
-	//SetTimeout(m_distance / 1.25);
-	SetTimeout(10);
+	//SetTimeout(10);
 	Robot::driveBase->ResetHelpers();
 }
 
@@ -45,14 +45,14 @@ void AutoDrive::Execute() {
 		counter++;
 	else
 		counter = 0;
-	Robot::driveBase->VaryPID(t);
+	Robot::driveBase->VaryPID(t, m_distance);
 }
 
 // Make this return true when this Command no longer needs to run execute()
 bool AutoDrive::IsFinished() {
 	//5.11*10*4096
 	//2.5*10*4096
-	if (IsTimedOut()  || (counter >= 20))
+	if (IsTimedOut()  || (counter >= 30))
 		return true;
 	else
 		return false;

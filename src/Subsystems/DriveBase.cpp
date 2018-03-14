@@ -222,6 +222,7 @@ void DriveBase::AutoDrive(double distance){
 		rightMotor1->Set(ControlMode::Position, targetPositionRotations); /* 50 rotations in either direction */
 }
 
+
 void DriveBase::CheckPosition() {
 	leftPosition = leftMotor1->GetSelectedSensorPosition(kPIDLoopIdx);
 	rightPosition = rightMotor1->GetSelectedSensorPosition(kPIDLoopIdx);
@@ -266,7 +267,7 @@ void DriveBase::StopMotors() {
 }
 
 bool DriveBase::CheckAngle(double target) {
-	if(target - pigeonIMU->GetFusedHeading() >= -2 && target - pigeonIMU->GetFusedHeading() <= 2) {
+	if(target - pigeonIMU->GetFusedHeading() >= -3 && target - pigeonIMU->GetFusedHeading() <= 3) {
 		return true;
 	} else {
 		return false;
@@ -321,14 +322,14 @@ void DriveBase::DisablePID() {
 	rightMotor1->ConfigClosedloopRamp(0,kTimeoutMs);
 }
 
-void DriveBase::VaryPID(int t) {
+void DriveBase::VaryPID(int t, double target) {
 	double angle;
 
 	angle = pigeonIMU->GetFusedHeading();
 
 	if (t%5 == 0) {
 		///*
-		if (leftSpeed > .42 || rightSpeed > .42)
+		if (leftSpeed > .45 || rightSpeed > .45)
 			ResetHelpers();
 		//*/
 		if (angle < -0.5) {
@@ -351,4 +352,8 @@ void DriveBase::VaryPID(int t) {
 void DriveBase::ResetHelpers() {
 	leftSpeed = .35;
 	rightSpeed = .35;
+}
+
+double DriveBase::MeasureCubeGrabDistance() {
+	return (leftMotor1->GetSelectedSensorPosition(kPIDLoopIdx) + rightMotor1->GetSelectedSensorPosition(kPIDLoopIdx))/2.0;
 }
