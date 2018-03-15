@@ -75,7 +75,7 @@ DriveBase::DriveBase() : frc::Subsystem("DriveBase") {
 			leftMotor1->Config_kF(kPIDLoopIdx, 0.0, kTimeoutMs);
 			leftMotor1->Config_kP(kPIDLoopIdx, 0.25, kTimeoutMs);
 			leftMotor1->Config_kI(kPIDLoopIdx, 0.0, kTimeoutMs);
-			leftMotor1->Config_kD(kPIDLoopIdx, 75.0, kTimeoutMs);
+			leftMotor1->Config_kD(kPIDLoopIdx, 100.0, kTimeoutMs);
 
 			/* set the peak and nominal outputs, 12V means full */
 			rightMotor1->ConfigNominalOutputForward(0, kTimeoutMs);
@@ -91,8 +91,8 @@ DriveBase::DriveBase() : frc::Subsystem("DriveBase") {
 
 			/* Set ramp rate */
 			//rightMotor1->ConfigClosedloopRamp(0.75,kTimeoutMs);
-			leftSpeed = 0.35;
-			rightSpeed = 0.35;
+			leftSpeed = defaultPIDSpeed;
+			rightSpeed = defaultPIDSpeed;
 			pcounter = 0;
 }
 
@@ -298,8 +298,8 @@ void DriveBase::PrintValues(){
 }
 
 void DriveBase::EnablePID() {
-	leftSpeed = 0.35;
-	rightSpeed = 0.35;
+	leftSpeed = defaultPIDSpeed;
+	rightSpeed = defaultPIDSpeed;
 	leftMotor1->ConfigPeakOutputForward(leftSpeed, kTimeoutMs);
 	leftMotor1->ConfigPeakOutputReverse(-leftSpeed, kTimeoutMs);
 	rightMotor1->ConfigPeakOutputForward(rightSpeed, kTimeoutMs);
@@ -329,7 +329,7 @@ void DriveBase::VaryPID(int t, double target) {
 
 	if (t%5 == 0) {
 		///*
-		if (leftSpeed > .45 || rightSpeed > .45)
+		if (leftSpeed > .5 || rightSpeed > .5)
 			ResetHelpers();
 		//*/
 		if (angle < -0.5) {
@@ -350,8 +350,8 @@ void DriveBase::VaryPID(int t, double target) {
 }
 
 void DriveBase::ResetHelpers() {
-	leftSpeed = .35;
-	rightSpeed = .35;
+	leftSpeed = defaultPIDSpeed;
+	rightSpeed = defaultPIDSpeed;
 }
 
 double DriveBase::MeasureCubeGrabDistance() {

@@ -58,7 +58,7 @@ AutoCmdGrp::AutoCmdGrp(int position, int override): CommandGroup() {
 				printf("Driving forward 13 feet, to score on left switch\n");
 				AddSequential(new ElevatorSwitch());
 				AddSequential(new AutoDrive(13));
-				AddSequential(new AutoRotate(-75, .7));
+				AddSequential(new AutoRotate(-60, .5));
 				AddSequential(new AutoDrive(2));
 				AddSequential(new IntakeOpenCmd(true));
 				AddSequential(new WaitCmd(2));

@@ -1,5 +1,6 @@
 #ifndef SRC_CONSTANTS_H_
 #define SRC_CONSTANTS_H_
+#define defaultPIDSpeed 0.75
 
 enum DriveBaseConstants
 {
@@ -18,7 +19,12 @@ enum DriveBaseConstants
 	 * set to zero to skip waiting for confirmation, set to nonzero to wait
 	 * and report to DS if action fails.
 	 */
-	 kTimeoutMs = 10
+	 kTimeoutMs = 10,
+
+	 /*
+	  *
+	  */
+
 };
 
 #endif
