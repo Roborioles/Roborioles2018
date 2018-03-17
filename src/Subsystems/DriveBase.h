@@ -54,7 +54,7 @@ public:
 	void AutoDrive(double distance);
 	void PrintValues();
 	void DisablePID();
-	void EnablePID();
+	void EnablePID(double distance);
 	void RotateToAngle(double angle, double speed);
 	bool CheckAngle(double target);
 	void ResetAngle();
@@ -62,7 +62,7 @@ public:
 	bool isOnTarget(double distance);
 	void VaryPID(int t, double target);
 	void CheckPosition();
-	void ResetHelpers();
+	void ResetHelpers(double distance);
 	void FindCubes();
 	double MeasureCubeGrabDistance();
 private:

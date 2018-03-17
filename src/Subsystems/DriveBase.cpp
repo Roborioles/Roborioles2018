@@ -87,7 +87,7 @@ DriveBase::DriveBase() : frc::Subsystem("DriveBase") {
 			rightMotor1->Config_kF(kPIDLoopIdx, 0.0, kTimeoutMs);
 			rightMotor1->Config_kP(kPIDLoopIdx, 0.25, kTimeoutMs);
 			rightMotor1->Config_kI(kPIDLoopIdx, 0.0, kTimeoutMs);
-			rightMotor1->Config_kD(kPIDLoopIdx, 75.0, kTimeoutMs);
+			rightMotor1->Config_kD(kPIDLoopIdx, 100.0, kTimeoutMs);
 
 			/* Set ramp rate */
 			//rightMotor1->ConfigClosedloopRamp(0.75,kTimeoutMs);
@@ -297,9 +297,14 @@ void DriveBase::PrintValues(){
 	pcounter++;
 }
 
-void DriveBase::EnablePID() {
-	leftSpeed = defaultPIDSpeed;
-	rightSpeed = defaultPIDSpeed;
+void DriveBase::EnablePID(double distance) {
+	if (distance > 5) {
+		leftSpeed = defaultPIDSpeed;
+		rightSpeed = defaultPIDSpeed;
+	} else {
+		leftSpeed = shortPIDSpeed;
+		rightSpeed = shortPIDSpeed;
+	}
 	leftMotor1->ConfigPeakOutputForward(leftSpeed, kTimeoutMs);
 	leftMotor1->ConfigPeakOutputReverse(-leftSpeed, kTimeoutMs);
 	rightMotor1->ConfigPeakOutputForward(rightSpeed, kTimeoutMs);
@@ -330,7 +335,7 @@ void DriveBase::VaryPID(int t, double target) {
 	if (t%5 == 0) {
 		///*
 		if (leftSpeed > .5 || rightSpeed > .5)
-			ResetHelpers();
+			ResetHelpers(target);
 		//*/
 		if (angle < -0.5) {
 			printf("Negative Angle, turn left\n");
@@ -349,9 +354,14 @@ void DriveBase::VaryPID(int t, double target) {
 	rightMotor1->ConfigPeakOutputReverse(-rightSpeed, kTimeoutMs);
 }
 
-void DriveBase::ResetHelpers() {
-	leftSpeed = defaultPIDSpeed;
-	rightSpeed = defaultPIDSpeed;
+void DriveBase::ResetHelpers(double distance) {
+	if (distance > 5) {
+		leftSpeed = defaultPIDSpeed;
+		rightSpeed = defaultPIDSpeed;
+	} else {
+		leftSpeed = shortPIDSpeed;
+		rightSpeed = shortPIDSpeed;
+	}
 }
 
 double DriveBase::MeasureCubeGrabDistance() {
