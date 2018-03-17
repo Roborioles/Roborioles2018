@@ -303,7 +303,7 @@ AutoCmdGrp::AutoCmdGrp(int position, int override): CommandGroup() {
 			printf("Middle, going for left switch\n");
 			AddSequential(new AutoDrive(4));
 			AddSequential(new AutoRotate(80, .5));
-			AddSequential(new AutoDrive(5));
+			AddSequential(new AutoDrive(9));
 			AddSequential(new AutoRotate(-80, .5));
 			AddSequential(new ElevatorSwitch());
 			AddSequential(new AutoDrive(4.5));
