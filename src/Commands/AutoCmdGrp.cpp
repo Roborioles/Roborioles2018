@@ -58,10 +58,10 @@ AutoCmdGrp::AutoCmdGrp(int position, int override): CommandGroup() {
 				printf("Driving forward 13 feet, to score on left switch\n");
 				AddSequential(new ElevatorSwitch());
 				AddSequential(new AutoDrive(13));
-				AddSequential(new AutoRotate(-60, .5));
-				AddSequential(new AutoDrive(2));
+				AddSequential(new AutoRotate(-60, .7));
 				AddSequential(new IntakeOpenCmd(true));
-				AddSequential(new WaitCmd(2));
+				AddSequential(new AutoDrive(3));
+				AddSequential(new WaitCmd(1));
 				AddSequential(new AutoDrive(-1));
 				AddSequential(new ElevatorFloor());
 				AddSequential(new AutoDrive(-1));
@@ -69,12 +69,13 @@ AutoCmdGrp::AutoCmdGrp(int position, int override): CommandGroup() {
 				// go for scale - overriden, switch is also on left
 				if (gameData[1] == 'L') {
 					printf("Driving forward 26 feet, to score on left scale\n");
+					AddSequential(new ElevatorSwitch());
+					AddSequential(new AutoDrive(22));
 					AddSequential(new ElevatorScale());
-					AddSequential(new AutoDrive(23.5));
-					AddSequential(new AutoRotate(-40, .5));
-					AddSequential(new AutoDrive(2));
+					AddSequential(new AutoRotate(-40, .6));
 					AddSequential(new IntakeOpenCmd(true));
-					AddSequential(new WaitCmd(2));
+					AddSequential(new AutoDrive(3));
+					AddSequential(new WaitCmd(1));
 					AddSequential(new AutoDrive(-2));
 					AddSequential(new ElevatorFloor());
 					AddSequential(new AutoDrive(-1));

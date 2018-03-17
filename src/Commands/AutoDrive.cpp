@@ -30,10 +30,10 @@ void AutoDrive::Initialize() {
 	SetTimeout(abs(m_distance) / 1.25);
 	Robot::driveBase->ResetAngle();
 	Robot::driveBase->EncoderReset();
-	Robot::driveBase->EnablePID();
+	Robot::driveBase->EnablePID(m_distance);
 	Robot::driveBase->AutoDrive(m_distance);
 	//SetTimeout(10);
-	Robot::driveBase->ResetHelpers();
+	Robot::driveBase->ResetHelpers(m_distance);
 }
 
 // Called repeatedly when this Command is scheduled to run
