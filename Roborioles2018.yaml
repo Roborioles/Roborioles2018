@@ -329,13 +329,13 @@ Children:
           default: '0'
           name: Reverse Channel (Solenoid)
           validators: *id015
-          value: '5'
+          value: '3'
         Forward Channel (Solenoid): !!robotbuilder.data.properties.ChoicesProperty
           choices: *id016
           default: '0'
           name: Forward Channel (Solenoid)
           validators: *id017
-          value: '4'
+          value: '2'
       Base: Double Solenoid
       Name: DeployTop
     - Children: []
@@ -357,13 +357,13 @@ Children:
           default: '0'
           name: Reverse Channel (Solenoid)
           validators: *id015
-          value: '7'
+          value: '1'
         Forward Channel (Solenoid): !!robotbuilder.data.properties.ChoicesProperty
           choices: *id016
           default: '0'
           name: Forward Channel (Solenoid)
           validators: *id017
-          value: '6'
+          value: '0'
       Base: Double Solenoid
       Name: DeployBottom
     Properties:
@@ -1096,12 +1096,34 @@ Children:
         name: Button on SmartDashboard, validators: null, value: false}
     Base: Command
     Name: WaitCmd
+  - Children: []
+    Properties:
+      Autonomous Selection: !!robotbuilder.data.properties.BooleanProperty {default: false,
+        name: Autonomous Selection, validators: null, value: false}
+      Parameters: !!robotbuilder.data.properties.ParametersProperty
+        default: []
+        name: Parameters
+        validators: null
+        value: []
+      Run When Disabled: !!robotbuilder.data.properties.BooleanProperty {default: false,
+        name: Run When Disabled, validators: null, value: false}
+      Requires: !!robotbuilder.data.properties.TypeSelectionProperty {default: None,
+        name: Requires, type: Subsystem, validators: null, value: IntakeSub}
+      Parameter presets: !!robotbuilder.data.properties.ParameterSetProperty
+        default: []
+        name: Parameter presets
+        validators: null
+        value: []
+      Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
+        name: Button on SmartDashboard, validators: null, value: false}
+    Base: Command
+    Name: PickeyUppy
   Properties: {}
   Base: Commands
   Name: Commands
 Properties:
   Eclipse Workspace: !!robotbuilder.data.properties.FileProperty {default: 'C:\Users\Roborioles\workspace',
-    extension: null, folder: true, name: Eclipse Workspace, validators: null, value: 'C:\Users\Roborioles\eclipse-workspace'}
+    extension: null, folder: true, name: Eclipse Workspace, validators: null, value: 'C:\Users\Roborioles\workspace'}
   Export Commands: !!robotbuilder.data.properties.BooleanProperty {default: true,
     name: Export Commands, validators: null, value: true}
   Autonomous command parameters: !!robotbuilder.data.properties.ParametersProperty

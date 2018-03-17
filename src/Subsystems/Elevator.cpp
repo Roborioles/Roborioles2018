@@ -359,7 +359,9 @@ void Elevator::PartyLight(bool isMoving,double encoderValue){
 	}
 }
 
-
+double Elevator::CubeDistance(){
+	return ultraS->GetRangeInches();
+}
 void Elevator::SetPIDs(){
 	std::string pstring = frc::SmartDashboard::GetString("DB/String 5", "0.12");
 	double pdouble = 0.12;
@@ -391,3 +393,4 @@ void Elevator::SetPIDs(){
 	elevatorMotor->Config_kI(kPIDLoopIdx, idouble, kTimeoutMs);
 	elevatorMotor->Config_kD(kPIDLoopIdx, ddouble, kTimeoutMs);
 }
+

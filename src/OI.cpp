@@ -28,6 +28,7 @@
 #include "Commands/ElevatorTarget.h"
 #include "Commands/IntakeDrive.h"
 #include "Commands/IntakeOpenCmd.h"
+#include "Commands/PickeyUppy.h"
 #include "Commands/RaiseParnters.h"
 #include "Commands/WaitCmd.h"
 
@@ -61,7 +62,6 @@ OI::OI() {
     raiseRight->WhenPressed(new RaiseParnters(2));
     raiseLeft.reset(new frc::JoystickButton(driveStick.get(), 8));
     raiseLeft->WhenPressed(new RaiseParnters(1));
-
 
     // SmartDashboard Buttons
     frc::SmartDashboard::PutData("ElevatorHighScale", new ElevatorHighScale());

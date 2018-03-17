@@ -61,6 +61,7 @@ public:
 	void ElevatorMoveDown();
 	void PartyLight(bool isMoving, double encoderValue);
 	void SetPIDs();
+	double CubeDistance();
 };
 
 #endif
