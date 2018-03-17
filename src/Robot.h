@@ -50,6 +50,7 @@ public:
 	void TeleopInit() override;
 	void TeleopPeriodic() override;
 
+	static int teleopReset;
 	static bool teleop;
 	static bool intrpt;
 };

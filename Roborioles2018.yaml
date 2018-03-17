@@ -93,7 +93,7 @@ Children:
           default: '2'
           name: CAN ID
           validators: [CANID]
-          value: '0'
+          value: '20'
       Base: Pigeon IMU
       Name: PigeonIMU
     Properties:
@@ -144,6 +144,26 @@ Children:
           name: Inverted, validators: null, value: false}
       Base: Speed Controller
       Name: ElevatorLEDs
+    - Children: []
+      Properties:
+        Ping Channel (Digital): !!robotbuilder.data.properties.ChoicesProperty
+          choices: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11',
+            '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23',
+            '24', '25']
+          default: '0'
+          name: Ping Channel (Digital)
+          validators: [DigitalChannel]
+          value: '1'
+        Echo Channel (Digital): !!robotbuilder.data.properties.ChoicesProperty
+          choices: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11',
+            '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23',
+            '24', '25']
+          default: '0'
+          name: Echo Channel (Digital)
+          validators: [DigitalChannel]
+          value: '2'
+      Base: Ultrasonic
+      Name: UltraS
     Properties:
       Send to SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: false,
         name: Send to SmartDashboard, validators: null, value: false}
@@ -234,38 +254,6 @@ Children:
   - Children:
     - Children: []
       Properties:
-        Output Channel (Solenoid): !!robotbuilder.data.properties.ChoicesProperty
-          choices: *id006
-          default: '0'
-          name: Output Channel (Solenoid)
-          validators: *id007
-          value: '3'
-        Output PCM (Solenoid): !!robotbuilder.data.properties.ChoicesProperty
-          choices: *id008
-          default: '0'
-          name: Output PCM (Solenoid)
-          validators: *id009
-          value: '0'
-      Base: Solenoid
-      Name: DeployTop
-    - Children: []
-      Properties:
-        Output Channel (Solenoid): !!robotbuilder.data.properties.ChoicesProperty
-          choices: *id006
-          default: '0'
-          name: Output Channel (Solenoid)
-          validators: *id007
-          value: '4'
-        Output PCM (Solenoid): !!robotbuilder.data.properties.ChoicesProperty
-          choices: *id008
-          default: '0'
-          name: Output PCM (Solenoid)
-          validators: *id009
-          value: '0'
-      Base: Solenoid
-      Name: DeployBottom
-    - Children: []
-      Properties:
         Forward PCM (Solenoid): !!robotbuilder.data.properties.ChoicesProperty
           choices: &id010 ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10',
             '11', '12', '13', '14', '15', '16', '17', '18', '19', '20']
@@ -322,6 +310,62 @@ Children:
           value: '6'
       Base: Double Solenoid
       Name: LeftElevate
+    - Children: []
+      Properties:
+        Forward PCM (Solenoid): !!robotbuilder.data.properties.ChoicesProperty
+          choices: *id010
+          default: '0'
+          name: Forward PCM (Solenoid)
+          validators: *id011
+          value: '19'
+        Reverse PCM (Solenoid): !!robotbuilder.data.properties.ChoicesProperty
+          choices: *id012
+          default: '0'
+          name: Reverse PCM (Solenoid)
+          validators: *id013
+          value: '19'
+        Reverse Channel (Solenoid): !!robotbuilder.data.properties.ChoicesProperty
+          choices: *id014
+          default: '0'
+          name: Reverse Channel (Solenoid)
+          validators: *id015
+          value: '5'
+        Forward Channel (Solenoid): !!robotbuilder.data.properties.ChoicesProperty
+          choices: *id016
+          default: '0'
+          name: Forward Channel (Solenoid)
+          validators: *id017
+          value: '4'
+      Base: Double Solenoid
+      Name: DeployTop
+    - Children: []
+      Properties:
+        Forward PCM (Solenoid): !!robotbuilder.data.properties.ChoicesProperty
+          choices: *id010
+          default: '0'
+          name: Forward PCM (Solenoid)
+          validators: *id011
+          value: '19'
+        Reverse PCM (Solenoid): !!robotbuilder.data.properties.ChoicesProperty
+          choices: *id012
+          default: '0'
+          name: Reverse PCM (Solenoid)
+          validators: *id013
+          value: '19'
+        Reverse Channel (Solenoid): !!robotbuilder.data.properties.ChoicesProperty
+          choices: *id014
+          default: '0'
+          name: Reverse Channel (Solenoid)
+          validators: *id015
+          value: '7'
+        Forward Channel (Solenoid): !!robotbuilder.data.properties.ChoicesProperty
+          choices: *id016
+          default: '0'
+          name: Forward Channel (Solenoid)
+          validators: *id017
+          value: '6'
+      Base: Double Solenoid
+      Name: DeployBottom
     Properties:
       Send to SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: false,
         name: Send to SmartDashboard, validators: null, value: false}
@@ -368,7 +412,7 @@ Children:
           name: Command
           type: Command
           validators: &id019 [TypeDropdownSelected]
-          value: RaisePartners
+          value: RaiseParnters
         When to Run: !!robotbuilder.data.properties.ChoicesProperty
           choices: &id020 [whileHeld, whenPressed, whenReleased]
           default: whileHeld
@@ -399,7 +443,7 @@ Children:
           name: Command
           type: Command
           validators: *id019
-          value: RaisePartners
+          value: RaiseParnters
         When to Run: !!robotbuilder.data.properties.ChoicesProperty
           choices: *id020
           default: whileHeld
@@ -984,7 +1028,7 @@ Children:
       Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
         name: Button on SmartDashboard, validators: null, value: false}
     Base: Command
-    Name: RaisePartners
+    Name: RaiseParnters
   - Children: []
     Properties:
       Autonomous Selection: !!robotbuilder.data.properties.BooleanProperty {default: false,
@@ -1029,6 +1073,29 @@ Children:
         name: Button on SmartDashboard, validators: null, value: false}
     Base: Command
     Name: ElevateInit
+  - Children: []
+    Properties:
+      Autonomous Selection: !!robotbuilder.data.properties.BooleanProperty {default: false,
+        name: Autonomous Selection, validators: null, value: false}
+      Parameters: !!robotbuilder.data.properties.ParametersProperty
+        default: []
+        name: Parameters
+        validators: null
+        value:
+        - !!robotbuilder.data.properties.ParameterDescriptor {name: time, type: double}
+      Run When Disabled: !!robotbuilder.data.properties.BooleanProperty {default: false,
+        name: Run When Disabled, validators: null, value: false}
+      Requires: !!robotbuilder.data.properties.TypeSelectionProperty {default: None,
+        name: Requires, type: Subsystem, validators: null, value: None}
+      Parameter presets: !!robotbuilder.data.properties.ParameterSetProperty
+        default: []
+        name: Parameter presets
+        validators: null
+        value: []
+      Button on SmartDashboard: !!robotbuilder.data.properties.BooleanProperty {default: true,
+        name: Button on SmartDashboard, validators: null, value: false}
+    Base: Command
+    Name: WaitCmd
   Properties: {}
   Base: Commands
   Name: Commands
