@@ -75,7 +75,7 @@ DriveBase::DriveBase() : frc::Subsystem("DriveBase") {
 			leftMotor1->Config_kF(kPIDLoopIdx, 0.0, kTimeoutMs);
 			leftMotor1->Config_kP(kPIDLoopIdx, 0.25, kTimeoutMs);
 			leftMotor1->Config_kI(kPIDLoopIdx, 0.0, kTimeoutMs);
-			leftMotor1->Config_kD(kPIDLoopIdx, 100.0, kTimeoutMs);
+			leftMotor1->Config_kD(kPIDLoopIdx, 125.0, kTimeoutMs);
 
 			/* set the peak and nominal outputs, 12V means full */
 			rightMotor1->ConfigNominalOutputForward(0, kTimeoutMs);
@@ -87,7 +87,7 @@ DriveBase::DriveBase() : frc::Subsystem("DriveBase") {
 			rightMotor1->Config_kF(kPIDLoopIdx, 0.0, kTimeoutMs);
 			rightMotor1->Config_kP(kPIDLoopIdx, 0.25, kTimeoutMs);
 			rightMotor1->Config_kI(kPIDLoopIdx, 0.0, kTimeoutMs);
-			rightMotor1->Config_kD(kPIDLoopIdx, 100.0, kTimeoutMs);
+			rightMotor1->Config_kD(kPIDLoopIdx, 125.0, kTimeoutMs);
 
 			/* Set ramp rate */
 			//rightMotor1->ConfigClosedloopRamp(0.75,kTimeoutMs);
@@ -267,7 +267,7 @@ void DriveBase::StopMotors() {
 }
 
 bool DriveBase::CheckAngle(double target) {
-	if(target - pigeonIMU->GetFusedHeading() >= -3 && target - pigeonIMU->GetFusedHeading() <= 3) {
+	if(target - pigeonIMU->GetFusedHeading() >= -2 && target - pigeonIMU->GetFusedHeading() <= 2) {
 		return true;
 	} else {
 		return false;
@@ -298,7 +298,7 @@ void DriveBase::PrintValues(){
 }
 
 void DriveBase::EnablePID(double distance) {
-	if (distance > 5) {
+	if (distance > 7) {
 		leftSpeed = defaultPIDSpeed;
 		rightSpeed = defaultPIDSpeed;
 	} else {
@@ -332,15 +332,31 @@ void DriveBase::VaryPID(int t, double target) {
 
 	angle = pigeonIMU->GetFusedHeading();
 
-	if (t%5 == 0) {
+	if (target > 7) { //basically meaningless now that it's %1, we used to do it every 5 cycles but nah
 		///*
-		if (leftSpeed > .5 || rightSpeed > .5)
+		if (leftSpeed > defaultPIDSpeed+.2 || rightSpeed > defaultPIDSpeed+.2)
 			ResetHelpers(target);
 		//*/
-		if (angle < -0.5) {
+		if (angle < -0.3) {
+			printf("Negative Angle, turn left\n");
+			rightSpeed += 0.02;
+		} else if (angle > 0.3){
+			printf("Positive Angle, turn right\n");
+			leftSpeed += .02;
+		} else {
+			printf("Nothing to vary here, angle is within range (-1 to 1)\n");
+		}
+	}
+
+	else { //basically meaningless now that it's %1, we used to do it every 5 cycles but nah
+		///*
+		if (leftSpeed > shortPIDSpeed+.2 || rightSpeed > shortPIDSpeed+.2)
+			ResetHelpers(target);
+		//*/
+		if (angle < -0.3) {
 			printf("Negative Angle, turn left\n");
 			rightSpeed += 0.01;
-		} else if (angle > 0.5){
+		} else if (angle > 0.3){
 			printf("Positive Angle, turn right\n");
 			leftSpeed += .01;
 		} else {
@@ -355,7 +371,7 @@ void DriveBase::VaryPID(int t, double target) {
 }
 
 void DriveBase::ResetHelpers(double distance) {
-	if (distance > 5) {
+	if (distance >7) {
 		leftSpeed = defaultPIDSpeed;
 		rightSpeed = defaultPIDSpeed;
 	} else {

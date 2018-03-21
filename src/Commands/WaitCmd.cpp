@@ -24,13 +24,14 @@ WaitCmd::WaitCmd(double time): frc::Command() {
 
 // Called just before this Command runs the first time
 void WaitCmd::Initialize() {
+	Robot::intakeSub->gamepadControl(0,0);
 	SetTimeout(m_time);
 
 }
 
 // Called repeatedly when this Command is scheduled to run
 void WaitCmd::Execute() {
-
+	Robot::elevator->ElevatorExecute();
 }
 
 // Make this return true when this Command no longer needs to run execute()

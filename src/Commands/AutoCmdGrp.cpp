@@ -64,7 +64,6 @@ AutoCmdGrp::AutoCmdGrp(int position, int override): CommandGroup() {
 				AddSequential(new AutoRotate(-60, .7));
 				AddSequential(new IntakeOpenCmd(true));
 				AddSequential(new AutoDrive(3));
-				AddSequential(new WaitCmd(1));
 				AddSequential(new AutoDrive(-1));
 				AddSequential(new ElevatorFloor());
 				AddSequential(new AutoDrive(-1));
@@ -73,15 +72,21 @@ AutoCmdGrp::AutoCmdGrp(int position, int override): CommandGroup() {
 				if (gameData[1] == 'L') {
 					printf("Driving forward 26 feet, to score on left scale\n");
 					AddSequential(new ElevatorSwitch());
-					AddSequential(new AutoDrive(22));
+					AddSequential(new AutoDrive(23));
 					AddSequential(new ElevatorScale());
-					AddSequential(new AutoRotate(-40, .6));
-					AddSequential(new IntakeOpenCmd(true));
-					AddSequential(new AutoDrive(3));
+					AddSequential(new WaitCmd(2));
+					AddSequential(new AutoRotate(-30, .6));
 					AddSequential(new WaitCmd(1));
-					AddSequential(new AutoDrive(-2));
+					AddSequential(new IntakeOpenCmd(true));
+					AddSequential(new AutoDrive(2));
+					AddSequential(new WaitCmd(1));
+					AddSequential(new AutoDrive(-2.5));
 					AddSequential(new ElevatorFloor());
-					AddSequential(new AutoDrive(-1));
+					AddSequential(new AutoRotate(-65, .6));
+					AddParallel(new AutoDrive(7));
+					AddSequential(new PickeyUppy());
+					AddSequential(new WaitCmd(0));//cancels intake
+					AddSequential(new AutoDrive(-3));
 				} else {
 					// Scale is on the right, so good luck - left position,
 					printf("Drive down the alley and hope for the best trying right scale\n");

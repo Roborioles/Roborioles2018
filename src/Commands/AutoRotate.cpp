@@ -26,7 +26,7 @@ AutoRotate::AutoRotate(double angle, double speed): frc::Command() {
 
 // Called just before this Command runs the first time
 void AutoRotate::Initialize() {
-	SetTimeout(3);
+	SetTimeout(5);
 	Robot::driveBase->EncoderReset();
 	Robot::driveBase->DisablePID();
 	printf("Auto Rotate Begin");
@@ -34,8 +34,8 @@ void AutoRotate::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void AutoRotate::Execute() {
-	Robot::driveBase->RotateToAngle(m_angle,m_speed);
 	Robot::elevator->ElevatorExecute();
+	Robot::driveBase->RotateToAngle(m_angle,m_speed);
 }
 
 // Make this return true when this Command no longer needs to run execute()
