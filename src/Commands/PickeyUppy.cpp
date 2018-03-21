@@ -29,7 +29,7 @@ void PickeyUppy::Initialize() {
 
 // Called repeatedly when this Command is scheduled to run
 void PickeyUppy::Execute() {
-	Robot::intakeSub->gamepadControl(1,.99);
+	Robot::intakeSub->gamepadControl(0.7,1.0);
 	if(Robot::elevator->CubeDistance() < 10)
 		Robot::intakeSub->openIntake(false);
 }
@@ -44,7 +44,7 @@ bool PickeyUppy::IsFinished() {
 
 // Called once after isFinished returns true
 void PickeyUppy::End() {
-
+	Robot::intakeSub->gamepadControl(0,0);
 }
 
 // Called when another command which requires one or more of the same

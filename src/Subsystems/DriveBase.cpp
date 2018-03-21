@@ -275,6 +275,10 @@ bool DriveBase::CheckAngle(double target) {
 
 }
 
+double DriveBase::GetAngle() {
+	return pigeonIMU->GetFusedHeading();
+}
+
 void DriveBase::ResetAngle() {
 	pigeonIMU->SetFusedHeading(0,0);
 }

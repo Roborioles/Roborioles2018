@@ -65,6 +65,7 @@ public:
 	void ResetHelpers(double distance);
 	void FindCubes();
 	double MeasureCubeGrabDistance();
+	double GetAngle();
 private:
 	double leftPosition;
 	double rightPosition;

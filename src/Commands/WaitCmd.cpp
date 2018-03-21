@@ -24,7 +24,6 @@ WaitCmd::WaitCmd(double time): frc::Command() {
 
 // Called just before this Command runs the first time
 void WaitCmd::Initialize() {
-	Robot::intakeSub->gamepadControl(0,0);
 	SetTimeout(m_time);
 
 }

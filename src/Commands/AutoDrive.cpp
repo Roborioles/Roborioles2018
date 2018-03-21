@@ -52,7 +52,7 @@ void AutoDrive::Execute() {
 bool AutoDrive::IsFinished() {
 	//5.11*10*4096
 	//2.5*10*4096
-	if (IsTimedOut()  || (counter >= 25))
+	if (IsTimedOut()  || (counter >= 30))
 		return true;
 	else
 		return false;
