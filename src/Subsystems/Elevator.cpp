@@ -234,7 +234,7 @@ void Elevator::ElevatorGoToFloor(){
 }
 void Elevator::ElevatorGoToExchange(){
 	//ElevatorGoToRevolutions(1.254);
-	ElevatorGoToRevolutions(3.254);
+	ElevatorGoToRevolutions(2.254);
 	//Height in inches for exchange (tied to button A)
 }
 void Elevator::ElevatorGoToSwitch(){
@@ -248,7 +248,7 @@ void Elevator::ElevatorGoToScale(){
 	//Height in revolutions for scale (tied to button X)
 }
 void Elevator::ElevatorGoToHighScale(){
-	ElevatorGoToRevolutions(39.045);
+	ElevatorGoToRevolutions(41.5);
 	//Height in revolutions for high scale (tied to button Y)
 }
 
@@ -257,7 +257,7 @@ void Elevator::PartyLight(bool isMoving,double encoderValue){
 	double switchSpot=12.5;
 	double lowScaleSpot=34;
 	double midScaleSpot=35;
-	double highScaleSpot=38;
+	double highScaleSpot=40;
 	double IML=-.87; /*confetti*/
 	double FL=.57; /*red*/
 	double EL=.64; /*yellow*/

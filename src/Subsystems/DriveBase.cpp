@@ -267,7 +267,7 @@ void DriveBase::StopMotors() {
 }
 
 bool DriveBase::CheckAngle(double target) {
-	if(target - pigeonIMU->GetFusedHeading() >= -2 && target - pigeonIMU->GetFusedHeading() <= 2) {
+	if(target - pigeonIMU->GetFusedHeading() >= -1.5 && target - pigeonIMU->GetFusedHeading() <= 1.5) {
 		return true;
 	} else {
 		return false;
@@ -302,7 +302,7 @@ void DriveBase::PrintValues(){
 }
 
 void DriveBase::EnablePID(double distance) {
-	if (distance > 7) {
+	if (distance > 10) {
 		leftSpeed = defaultPIDSpeed;
 		rightSpeed = defaultPIDSpeed;
 	} else {
@@ -336,7 +336,7 @@ void DriveBase::VaryPID(int t, double target) {
 
 	angle = pigeonIMU->GetFusedHeading();
 
-	if (target > 7) { //basically meaningless now that it's %1, we used to do it every 5 cycles but nah
+	if (target > 10) { //basically meaningless now that it's %1, we used to do it every 5 cycles but nah
 		///*
 		if (leftSpeed > defaultPIDSpeed+.2 || rightSpeed > defaultPIDSpeed+.2)
 			ResetHelpers(target);
@@ -375,7 +375,7 @@ void DriveBase::VaryPID(int t, double target) {
 }
 
 void DriveBase::ResetHelpers(double distance) {
-	if (distance >7) {
+	if (distance > 10) {
 		leftSpeed = defaultPIDSpeed;
 		rightSpeed = defaultPIDSpeed;
 	} else {
