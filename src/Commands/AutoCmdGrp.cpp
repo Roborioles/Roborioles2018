@@ -59,14 +59,14 @@ AutoCmdGrp::AutoCmdGrp(int position, int override): CommandGroup() {
 				printf("Driving forward 13 feet, to score on left switch\n");
 				AddSequential(new ElevatorSwitch());
 				AddSequential(new AutoDrive(13));
-				AddSequential(new AutoRotate(-60, .7));
+				AddSequential(new AutoRotate(-60, .65));
 				AddSequential(new IntakeOpenCmd(true));
 				AddSequential(new AutoDrive(3));
 				AddSequential(new AutoDrive(-2));
 				AddSequential(new ElevatorFloor());
-				AddSequential(new AutoRotate(60, .7));
+				AddSequential(new AutoRotate(60, .65));
 				AddSequential(new AutoDrive(7));
-				AddSequential(new AutoRotate(-95, .7));
+				AddSequential(new AutoRotate(-95, .6));
 				AddParallel(new AutoDrive(3));
 				AddSequential(new PickeyUppy());
 				AddSequential(new AutoDrive(-2));
@@ -76,7 +76,7 @@ AutoCmdGrp::AutoCmdGrp(int position, int override): CommandGroup() {
 					printf("Driving forward 26 feet, to score on left scale\n");
 					AddSequential(new ElevatorSwitch());
 					AddSequential(new AutoDrive(23));
-					AddSequential(new ElevatorScale());
+					AddSequential(new ElevatorHighScale());
 					AddSequential(new WaitCmd(2));
 					AddSequential(new AutoRotate(-30, .6));
 					AddSequential(new WaitCmd(1));
@@ -98,7 +98,7 @@ AutoCmdGrp::AutoCmdGrp(int position, int override): CommandGroup() {
 					AddSequential(new WaitCmd(1));
 					AddSequential(new ElevatorSwitch());
 					AddSequential(new AutoDrive(11));
-					/*AddSequential(new ElevatorScale());
+					/*AddSequential(new ElevatorHighScale());
 					AddSequential(new AutoRotate(100, .6));
 					AddSequential(new IntakeOpenCmd(true));
 					AddSequential(new AutoDrive(5.5));
@@ -140,7 +140,7 @@ AutoCmdGrp::AutoCmdGrp(int position, int override): CommandGroup() {
 					printf("Driving forward 26 feet, to score on left scale\n");
 					AddSequential(new ElevatorSwitch());
 					AddSequential(new AutoDrive(23));
-					AddSequential(new ElevatorScale());
+					AddSequential(new ElevatorHighScale());
 					AddSequential(new WaitCmd(2));
 					AddSequential(new AutoRotate(-30, .6));
 					AddSequential(new WaitCmd(1));
@@ -209,12 +209,12 @@ AutoCmdGrp::AutoCmdGrp(int position, int override): CommandGroup() {
 				printf("Driving forward 13 feet, to score on right switch\n");
 				AddSequential(new ElevatorSwitch());
 				AddSequential(new AutoDrive(13));
-				AddSequential(new AutoRotate(60, .7));
+				AddSequential(new AutoRotate(60, .65));
 				AddSequential(new IntakeOpenCmd(true));
 				AddSequential(new AutoDrive(3));
 				AddSequential(new AutoDrive(-2));
 				AddSequential(new ElevatorFloor());
-				AddSequential(new AutoRotate(-60, .7));
+				AddSequential(new AutoRotate(-60, .65));
 				AddSequential(new AutoDrive(6));
 				AddSequential(new AutoRotate(95, .6));
 				AddParallel(new AutoDrive(6));
@@ -226,7 +226,7 @@ AutoCmdGrp::AutoCmdGrp(int position, int override): CommandGroup() {
 					printf("Driving forward 26 feet, to score on right scale\n");
 					AddSequential(new ElevatorSwitch());
 					AddSequential(new AutoDrive(23));
-					AddSequential(new ElevatorScale());
+					AddSequential(new ElevatorHighScale());
 					AddSequential(new WaitCmd(2));
 					AddSequential(new AutoRotate(30, .6));
 					AddSequential(new WaitCmd(1));
@@ -287,7 +287,7 @@ AutoCmdGrp::AutoCmdGrp(int position, int override): CommandGroup() {
 					printf("Driving forward 26 feet, to score on right scale\n");
 					AddSequential(new ElevatorSwitch());
 					AddSequential(new AutoDrive(23));
-					AddSequential(new ElevatorScale());
+					AddSequential(new ElevatorHighScale());
 					AddSequential(new WaitCmd(2));
 					AddSequential(new AutoRotate(30, .6));
 					AddSequential(new WaitCmd(1));

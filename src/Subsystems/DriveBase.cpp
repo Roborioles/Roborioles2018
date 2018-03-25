@@ -246,15 +246,29 @@ bool DriveBase::isOnTarget(double distance) {
 
 void DriveBase::RotateToAngle(double angle, double speed) {
 	if(angle<0) {
-		leftMotor1->Set(ControlMode::PercentOutput,  speed);
-		//leftMotor2->Set(ControlMode::PercentOutput,  speed);
-		rightMotor1->Set(ControlMode::PercentOutput, -speed);
-		//rightMotor2->Set(ControlMode::PercentOutput, -speed);
+		if (abs(angle) > abs(pigeonIMU->GetFusedHeading())) {
+			leftMotor1->Set(ControlMode::PercentOutput,  speed);
+			//leftMotor2->Set(ControlMode::PercentOutput,  speed);
+			rightMotor1->Set(ControlMode::PercentOutput, -speed);
+			//rightMotor2->Set(ControlMode::PercentOutput, -speed);
+		} else {
+			leftMotor1->Set(ControlMode::PercentOutput,  speed * -0.75);
+			//leftMotor2->Set(ControlMode::PercentOutput,  speed);
+			rightMotor1->Set(ControlMode::PercentOutput, -speed * -0.75);
+			//rightMotor2->Set(ControlMode::PercentOutput, -speed);
+		}
 	} else {
-		leftMotor1->Set(ControlMode::PercentOutput,  -speed);
-		//leftMotor2->Set(ControlMode::PercentOutput,  -speed);
-		rightMotor1->Set(ControlMode::PercentOutput, speed);
-		//rightMotor2->Set(ControlMode::PercentOutput, speed);
+		if (abs(angle) > abs(pigeonIMU->GetFusedHeading())) {
+			leftMotor1->Set(ControlMode::PercentOutput,  -speed);
+			//leftMotor2->Set(ControlMode::PercentOutput,  -speed);
+			rightMotor1->Set(ControlMode::PercentOutput, speed);
+			//rightMotor2->Set(ControlMode::PercentOutput, speed);
+		} else {
+			leftMotor1->Set(ControlMode::PercentOutput,  -speed * -0.75);
+			//leftMotor2->Set(ControlMode::PercentOutput,  -speed);
+			rightMotor1->Set(ControlMode::PercentOutput, speed * -0.75);
+			//rightMotor2->Set(ControlMode::PercentOutput, speed);
+		}
 	}
 }
 

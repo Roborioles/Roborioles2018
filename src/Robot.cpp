@@ -113,6 +113,7 @@ void Robot::AutonomousPeriodic() {
 	frc::Scheduler::GetInstance()->Run();
 	Robot::driveBase->PrintValues();
 	SmartDashboard::PutString("DB/String 5", "Pressure: " + std::to_string(Robot::driveBase->SensorReading()));
+	SmartDashboard::PutString("DB/String 4", "Angle: " + std::to_string(Robot::driveBase->GetAngle()));
 }
 
 void Robot::TeleopInit() {

@@ -48,7 +48,7 @@ bool AutoRotate::IsFinished() {
 
 // Called once after isFinished returns true
 void AutoRotate::End() {
-	printf("AUTO DRIVE FINISHED; ANGLE : %f\n" , Robot::driveBase->GetAngle());
+	printf("AUTO ROTATE FINISHED; ANGLE : %f\n" , Robot::driveBase->GetAngle());
 	Robot::driveBase->StopMotors();
 	Robot::driveBase->ResetAngle();
 }
