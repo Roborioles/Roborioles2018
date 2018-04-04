@@ -45,6 +45,10 @@ void AutonomousCommand::Initialize() {
 			!SmartDashboard::GetBoolean("DB/Button 2", false))
 		override=2;
 
+	if (SmartDashboard::GetBoolean("DB/Button 3", false) &&
+			SmartDashboard::GetBoolean("DB/Button 2", false))
+		override=3;
+
 	autoCmd.reset(new AutoCmdGrp(position,override));
 	autoCmd->Start();
 }

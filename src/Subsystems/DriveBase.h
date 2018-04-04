@@ -55,8 +55,8 @@ public:
 	void PrintValues();
 	void DisablePID();
 	void EnablePID(double distance);
-	void RotateToAngle(double angle, double speed);
-	bool CheckAngle(double target);
+	void RotateToAngle(double angle);
+	bool CheckAngle(double target, double tolerance);
 	void ResetAngle();
 	void StopMotors();
 	bool isOnTarget(double distance);

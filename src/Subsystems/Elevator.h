@@ -62,6 +62,7 @@ public:
 	void PartyLight(bool isMoving, double encoderValue);
 	void SetPIDs();
 	double CubeDistance();
+	bool AutoFinished();
 };
 
 #endif

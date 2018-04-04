@@ -95,14 +95,14 @@ void Elevator::ElevatorGoToRevolutions(double newTargetPos){
 	targetPos = newTargetPos;
 	isGoingToFloor = false;
 	targetMode = true;
-	frc::SmartDashboard::PutString("DB/String 1",std::to_string(targetPos));
+	//frc::SmartDashboard::PutString("DB/String 1",std::to_string(targetPos));
 }
 
 void Elevator::ElevatorExecute(){
 	double ultraValue = ultraS->GetRangeInches();
-	frc::SmartDashboard::PutString("DB/String 8", std::to_string(ultraValue));
+	frc::SmartDashboard::PutString("DB/String 6", "UltraSonic: " + std::to_string(ultraValue));
 	double encoderValue = elevatorMotor->GetSelectedSensorPosition(0)/4096.0;
-	frc::SmartDashboard::PutString("DB/String 0",std::to_string(encoderValue));
+	//frc::SmartDashboard::PutString("DB/String 0",std::to_string(encoderValue));
 	//check for bottom limit switch
 	bool bottomSwitch= elevatorMotor->GetSensorCollection().IsRevLimitSwitchClosed();
 	if (isGoingToFloor){
@@ -179,7 +179,7 @@ void Elevator::ElevatorExecuteTarget(){
 
 	double encoderValue = elevatorMotor->GetSelectedSensorPosition(0)/4096.0;
 	double difference = targetPos - encoderValue;
-	frc::SmartDashboard::PutString("DB/String 2",std::to_string(difference));
+	//frc::SmartDashboard::PutString("DB/String 2",std::to_string(difference));
 	if (difference > 1.5 || difference < -1.5){
 		isTargetMoving = true;
 	}
@@ -200,7 +200,7 @@ void Elevator::ElevatorMoveUp(){
 	if(!topLimit){
 		targetPos += 4.0;
 	}
-	frc::SmartDashboard::PutString("DB/String 1",std::to_string(targetPos));
+	//frc::SmartDashboard::PutString("DB/String 1",std::to_string(targetPos));
 }
 
 void Elevator::ElevatorMoveDown(){
@@ -210,7 +210,7 @@ void Elevator::ElevatorMoveDown(){
 		targetMode = true;
 	}
 	targetPos -= 4.0;
-	frc::SmartDashboard::PutString("DB/String 1",std::to_string(targetPos));
+	//frc::SmartDashboard::PutString("DB/String 1",std::to_string(targetPos));
 }
 
 //Move to setpoints
@@ -394,3 +394,9 @@ void Elevator::SetPIDs(){
 	elevatorMotor->Config_kD(kPIDLoopIdx, ddouble, kTimeoutMs);
 }
 
+bool Elevator::AutoFinished() {
+	if (!isTargetMoving) {
+		return true;
+	}
+	return false;
+}

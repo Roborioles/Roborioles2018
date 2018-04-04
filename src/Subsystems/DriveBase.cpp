@@ -244,17 +244,33 @@ bool DriveBase::isOnTarget(double distance) {
 
 }
 
-void DriveBase::RotateToAngle(double angle, double speed) {
+void DriveBase::RotateToAngle(double angle) {
+	double speed = .6;
+	double multiplier = .75;
 	if(angle<0) {
-		leftMotor1->Set(ControlMode::PercentOutput,  speed);
-		//leftMotor2->Set(ControlMode::PercentOutput,  speed);
-		rightMotor1->Set(ControlMode::PercentOutput, -speed);
-		//rightMotor2->Set(ControlMode::PercentOutput, -speed);
+		if (abs(angle) > abs(pigeonIMU->GetFusedHeading())) {
+			leftMotor1->Set(ControlMode::PercentOutput,  speed);
+			//leftMotor2->Set(ControlMode::PercentOutput,  speed);
+			rightMotor1->Set(ControlMode::PercentOutput, -speed);
+			//rightMotor2->Set(ControlMode::PercentOutput, -speed);
+		} else {
+			leftMotor1->Set(ControlMode::PercentOutput,  speed * -multiplier);
+			//leftMotor2->Set(ControlMode::PercentOutput,  speed);
+			rightMotor1->Set(ControlMode::PercentOutput, -speed * -multiplier);
+			//rightMotor2->Set(ControlMode::PercentOutput, -speed);
+		}
 	} else {
-		leftMotor1->Set(ControlMode::PercentOutput,  -speed);
-		//leftMotor2->Set(ControlMode::PercentOutput,  -speed);
-		rightMotor1->Set(ControlMode::PercentOutput, speed);
-		//rightMotor2->Set(ControlMode::PercentOutput, speed);
+		if (abs(angle) > abs(pigeonIMU->GetFusedHeading())) {
+			leftMotor1->Set(ControlMode::PercentOutput,  -speed);
+			//leftMotor2->Set(ControlMode::PercentOutput,  -speed);
+			rightMotor1->Set(ControlMode::PercentOutput, speed);
+			//rightMotor2->Set(ControlMode::PercentOutput, speed);
+		} else {
+			leftMotor1->Set(ControlMode::PercentOutput,  -speed * -multiplier);
+			//leftMotor2->Set(ControlMode::PercentOutput,  -speed);
+			rightMotor1->Set(ControlMode::PercentOutput, speed * -multiplier);
+			//rightMotor2->Set(ControlMode::PercentOutput, speed);
+		}
 	}
 }
 
@@ -266,8 +282,9 @@ void DriveBase::StopMotors() {
 
 }
 
-bool DriveBase::CheckAngle(double target) {
-	if(target - pigeonIMU->GetFusedHeading() >= -1.5 && target - pigeonIMU->GetFusedHeading() <= 1.5) {
+bool DriveBase::CheckAngle(double target, double tolerance) {
+	tolerance /= 2;
+	if(target - pigeonIMU->GetFusedHeading() >= -tolerance && target - pigeonIMU->GetFusedHeading() <= tolerance) {
 		return true;
 	} else {
 		return false;
@@ -384,6 +401,3 @@ void DriveBase::ResetHelpers(double distance) {
 	}
 }
 
-double DriveBase::MeasureCubeGrabDistance() {
-	return (leftMotor1->GetSelectedSensorPosition(kPIDLoopIdx) + rightMotor1->GetSelectedSensorPosition(kPIDLoopIdx))/2.0;
-}

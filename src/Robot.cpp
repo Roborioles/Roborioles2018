@@ -71,26 +71,37 @@ void Robot::DisabledInit(){
 void Robot::DisabledPeriodic() {
 	frc::Scheduler::GetInstance()->Run();
 	SmartDashboard::PutString("DB/String 5", "Pressure: " + std::to_string(Robot::driveBase->SensorReading()));
+	std::string pos = "";
+	std::string over = "";
 	// Location
 	if (SmartDashboard::GetBoolean("DB/Button 0", false)) {
 		SmartDashboard::PutBoolean("DB/Button 1",false);
-		SmartDashboard::PutString("DB/String 0","Left Position");
+		pos = "Left, ";
 	} else if(SmartDashboard::GetBoolean("DB/Button 1", false)) {
 		SmartDashboard::PutBoolean("DB/Button 0",false);
-		SmartDashboard::PutString("DB/String 0","Right Position");
+		pos = "Right, ";
 	} else {
-		SmartDashboard::PutString("DB/String 0","Middle Position");
+		if ((SmartDashboard::GetBoolean("DB/Button 2", false) || SmartDashboard::GetBoolean("DB/Button 3", false))
+				&& (!SmartDashboard::GetBoolean("DB/Button 0", false) && !SmartDashboard::GetBoolean("DB/Button 1", false))) {
+			pos = "Middle, ";
+		} else {
+			pos = "No Autonomous Chosen";
+		}
 	}
 	// Action taken
-	if (SmartDashboard::GetBoolean("DB/Button 2", false)) {
-		SmartDashboard::PutString("DB/String 9","Switch Override");
-		SmartDashboard::PutBoolean("DB/Button 3",false);
+	if (SmartDashboard::GetBoolean("DB/Button 2", false) && SmartDashboard::GetBoolean("DB/Button 3", false)) {
+		over = "No Over, Score";
+	} else if (SmartDashboard::GetBoolean("DB/Button 2", false)) {
+		over = "Scale, Halt";
 	} else if (SmartDashboard::GetBoolean("DB/Button 3", false)){
-		SmartDashboard::PutString("DB/String 9","Scale Override");
-		SmartDashboard::PutBoolean("DB/Button 2",false);
+		over = "Scale, Score";
 	} else {
-		SmartDashboard::PutString("DB/String 9","");
+		over = "No Over, Halt";
 	}
+
+
+	SmartDashboard::PutString("DB/String 0", pos + over);
+
 }
 
 void Robot::AutonomousInit() {
@@ -113,6 +124,7 @@ void Robot::AutonomousPeriodic() {
 	frc::Scheduler::GetInstance()->Run();
 	Robot::driveBase->PrintValues();
 	SmartDashboard::PutString("DB/String 5", "Pressure: " + std::to_string(Robot::driveBase->SensorReading()));
+	SmartDashboard::PutString("DB/String 4", "Angle: " + std::to_string(Robot::driveBase->GetAngle()));
 }
 
 void Robot::TeleopInit() {
