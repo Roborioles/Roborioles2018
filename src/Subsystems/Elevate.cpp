@@ -52,14 +52,14 @@ void Elevate::Raise(int position) {
 	if (deployTop->Get()== DoubleSolenoid::Value::kForward){
 		// left
 		if (position==1) {
-			printf("Raising left\n");
+			if (Robot::debug) printf("Raising left\n");
 			if (leftElevate->Get()==frc::DoubleSolenoid::Value::kForward) {
 				leftElevate->Set(frc::DoubleSolenoid::Value::kOff);
 			} else {
 				leftElevate->Set(frc::DoubleSolenoid::Value::kForward);
 			}
 		} else { // right
-			printf("Raising Right\n");
+			if (Robot::debug) printf("Raising Right\n");
 			if (rightElevate->Get()==frc::DoubleSolenoid::Value::kForward) {
 				rightElevate->Set(frc::DoubleSolenoid::Value::kOff);
 			} else {

@@ -54,5 +54,6 @@ public:
 	static int teleopReset;
 	static bool teleop;
 	static bool intrpt;
+	static bool debug;
 };
 #endif

@@ -25,6 +25,7 @@ std::unique_ptr<OI> Robot::oi;
 bool Robot::teleop = false;
 bool Robot::intrpt = false;
 int Robot::teleopReset = 0;
+bool Robot::debug = false;
 
 void Robot::RobotInit() {
 	RobotMap::init();

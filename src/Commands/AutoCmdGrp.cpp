@@ -116,7 +116,7 @@ AutoCmdGrp::AutoCmdGrp(int position, int override): CommandGroup() {
 			// Switch is on the left
 			if (gameData[1] == 'R') {
 				// Scale is on the right, switch is on the left, scale is better
-				AddSequential(new AutoCmdGrpPicker(7));
+				AddSequential(new AutoCmdGrpPicker(6));
 			} else {
 				// Scale and switch are both on the left
 				if (override == 0 || override == 1) {

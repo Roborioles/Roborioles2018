@@ -1,7 +1,7 @@
 #ifndef SRC_CONSTANTS_H_
 #define SRC_CONSTANTS_H_
-#define defaultPIDSpeed 0.75
-#define shortPIDSpeed .65
+#define defaultPIDSpeed 0.7
+#define shortPIDSpeed .55
 
 enum DriveBaseConstants
 {

@@ -245,30 +245,33 @@ bool DriveBase::isOnTarget(double distance) {
 }
 
 void DriveBase::RotateToAngle(double angle) {
-	double speed = .6;
-	double multiplier = .75;
+	double speed = .5;
 	if(angle<0) {
 		if (abs(angle) > abs(pigeonIMU->GetFusedHeading())) {
+			//speed = abs(speed);
 			leftMotor1->Set(ControlMode::PercentOutput,  speed);
 			//leftMotor2->Set(ControlMode::PercentOutput,  speed);
 			rightMotor1->Set(ControlMode::PercentOutput, -speed);
 			//rightMotor2->Set(ControlMode::PercentOutput, -speed);
 		} else {
-			leftMotor1->Set(ControlMode::PercentOutput,  speed * -multiplier);
+			//speed = .6 * -.75;
+			leftMotor1->Set(ControlMode::PercentOutput,  speed * -.75);
 			//leftMotor2->Set(ControlMode::PercentOutput,  speed);
-			rightMotor1->Set(ControlMode::PercentOutput, -speed * -multiplier);
+			rightMotor1->Set(ControlMode::PercentOutput, -speed * -.75);
 			//rightMotor2->Set(ControlMode::PercentOutput, -speed);
 		}
 	} else {
 		if (abs(angle) > abs(pigeonIMU->GetFusedHeading())) {
+			//speed = abs(speed);
 			leftMotor1->Set(ControlMode::PercentOutput,  -speed);
 			//leftMotor2->Set(ControlMode::PercentOutput,  -speed);
 			rightMotor1->Set(ControlMode::PercentOutput, speed);
 			//rightMotor2->Set(ControlMode::PercentOutput, speed);
 		} else {
-			leftMotor1->Set(ControlMode::PercentOutput,  -speed * -multiplier);
+			//speed = .6 * -.75;
+			leftMotor1->Set(ControlMode::PercentOutput,  -speed * -.75);
 			//leftMotor2->Set(ControlMode::PercentOutput,  -speed);
-			rightMotor1->Set(ControlMode::PercentOutput, speed * -multiplier);
+			rightMotor1->Set(ControlMode::PercentOutput, speed * -.75);
 			//rightMotor2->Set(ControlMode::PercentOutput, speed);
 		}
 	}
@@ -309,7 +312,7 @@ void DriveBase::PrintValues(){
 		righterror = rightMotor1->GetClosedLoopError(kPIDLoopIdx);
 	}
 
-	if (pcounter%2==0) {
+	if (pcounter%2==0 && Robot::debug) {
 		printf("LeftPosition %i [%i], Speed %f, RightPosition %i [%i], Speed %f, angle %f\n",
 				leftMotor1->GetSelectedSensorPosition(kPIDLoopIdx),lefterror,leftSpeed,
 				rightMotor1->GetSelectedSensorPosition(kPIDLoopIdx),righterror,rightSpeed,
@@ -359,13 +362,13 @@ void DriveBase::VaryPID(int t, double target) {
 			ResetHelpers(target);
 		//*/
 		if (angle < -0.3) {
-			printf("Negative Angle, turn left\n");
+			if (Robot::debug) printf("Negative Angle, turn left\n");
 			rightSpeed += 0.02;
 		} else if (angle > 0.3){
-			printf("Positive Angle, turn right\n");
+			if (Robot::debug) printf("Positive Angle, turn right\n");
 			leftSpeed += .02;
 		} else {
-			printf("Nothing to vary here, angle is within range (-1 to 1)\n");
+			if (Robot::debug) printf("Nothing to vary here, angle is within range (-1 to 1)\n");
 		}
 	}
 
@@ -375,13 +378,13 @@ void DriveBase::VaryPID(int t, double target) {
 			ResetHelpers(target);
 		//*/
 		if (angle < -0.3) {
-			printf("Negative Angle, turn left\n");
+			if (Robot::debug) printf("Negative Angle, turn left\n");
 			rightSpeed += 0.01;
 		} else if (angle > 0.3){
-			printf("Positive Angle, turn right\n");
+			if (Robot::debug) printf("Positive Angle, turn right\n");
 			leftSpeed += .01;
 		} else {
-			printf("Nothing to vary here, angle is within range (-1 to 1)\n");
+			if (Robot::debug) printf("Nothing to vary here, angle is within range (-1 to 1)\n");
 		}
 	}
 

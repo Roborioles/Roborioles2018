@@ -24,7 +24,7 @@ PickeyUppy::PickeyUppy(): frc::Command() {
 
 // Called just before this Command runs the first time
 void PickeyUppy::Initialize() {
-	SetTimeout(6);
+	SetTimeout(4);
 }
 
 // Called repeatedly when this Command is scheduled to run
